@@ -1,83 +1,98 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Libreria_InvestYPrincipal_Api.Models;
+using Libreria_InvestYPrincipal_Api.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Libreria_InvestYPrincipal_Api.Controllers
 {
-    public class AuthorsController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class AuthorsController : ControllerBase
     {
-        // GET: AuthorsController
-        public ActionResult Index()
+        private readonly IAuthorService _authorService;
+
+        public AuthorsController(IAuthorService authorService)
         {
-            return View();
+            _authorService = authorService;
         }
 
-        // GET: AuthorsController/Details/5
-        public ActionResult Details(int id)
+        /// <summary>
+        /// Obtiene todos los autores
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
         {
-            return View();
+            var authors = await _authorService.GetAllAuthorsAsync();
+            return Ok(authors);
         }
 
-        // GET: AuthorsController/Create
-        public ActionResult Create()
+        /// <summary>
+        /// Obtiene un autor por ID
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Author>> GetAuthor(int id)
         {
-            return View();
+            var author = await _authorService.GetAuthorByIdAsync(id);
+            if (author == null)
+            {
+                return NotFound();
+            }
+            return Ok(author);
         }
 
-        // POST: AuthorsController/Create
+        /// <summary>
+        /// Crea un nuevo autor
+        /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult<Author>> CreateAuthor(Author author)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            catch
-            {
-                return View();
-            }
+
+            var createdAuthor = await _authorService.CreateAuthorAsync(author);
+            return CreatedAtAction(nameof(GetAuthor), new { id = createdAuthor.Id }, createdAuthor);
         }
 
-        // GET: AuthorsController/Edit/5
-        public ActionResult Edit(int id)
+        /// <summary>
+        /// Actualiza un autor existente
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAuthor(int id, Author author)
         {
-            return View();
+            if (id != author.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedAuthor = await _authorService.UpdateAuthorAsync(id, author);
+            if (updatedAuthor == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
-        // POST: AuthorsController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        /// <summary>
+        /// Elimina un autor
+        /// </summary>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAuthor(int id)
         {
-            try
+            var result = await _authorService.DeleteAuthorAsync(id);
+            if (!result)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: AuthorsController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: AuthorsController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return NoContent();
         }
     }
 }

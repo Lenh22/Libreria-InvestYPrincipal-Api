@@ -4,14 +4,270 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Net.Http;
+using System.Text;
+using Newtonsoft.Json;
+using Libreria_InvestYPrincipal_Web.UserControls;
 
 namespace Libreria_InvestYPrincipal_Web.Pages
 {
     public partial class Books : System.Web.UI.Page
     {
+        private static readonly HttpClient httpClient = new HttpClient();
+        private const string API_BASE_URL = "https://localhost:7000/api";
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack)
+            {
+                LoadBooks();
+                LoadAuthors();
+                SetupEventHandlers();
+            }
+        }
 
+        private void SetupEventHandlers()
+        {
+            ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
+            ucBookSearch.ClearRequested += UcBookSearch_ClearRequested;
+            ucBookForm.SaveRequested += UcBookForm_SaveRequested;
+            ucBookForm.CancelRequested += UcBookForm_CancelRequested;
+        }
+
+        private async void LoadBooks()
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"{API_BASE_URL}/books");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
+                    gvLibros.DataSource = books;
+                    gvLibros.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error al cargar libros: {ex.Message}", "error");
+            }
+        }
+
+        private async void LoadAuthors()
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"{API_BASE_URL}/authors");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var authors = JsonConvert.DeserializeObject<List<AuthorDto>>(json);
+                    
+                    ucBookForm.ddlAuthor.Items.Clear();
+                    ucBookForm.ddlAuthor.Items.Add(new ListItem("Seleccionar autor...", ""));
+                    
+                    foreach (var author in authors)
+                    {
+                        ucBookForm.ddlAuthor.Items.Add(new ListItem(author.Name, author.Id.ToString()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error al cargar autores: {ex.Message}", "error");
+            }
+        }
+
+        protected void btnNewBook_Click(object sender, EventArgs e)
+        {
+            ucBookForm.ClearForm();
+            ucBookForm.SetFormTitle("Nuevo Libro");
+            ShowModal();
+        }
+
+        protected void gvLibros_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Edit")
+            {
+                int bookId = Convert.ToInt32(e.CommandArgument);
+                LoadBookForEdit(bookId);
+            }
+            else if (e.CommandName == "Delete")
+            {
+                int bookId = Convert.ToInt32(e.CommandArgument);
+                DeleteBook(bookId);
+            }
+        }
+
+        private async void LoadBookForEdit(int bookId)
+        {
+            try
+            {
+                var response = await httpClient.GetAsync($"{API_BASE_URL}/books/{bookId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var book = JsonConvert.DeserializeObject<BookDto>(json);
+                    
+                    ucBookForm.BookId = book.Id;
+                    ucBookForm.Title = book.Title;
+                    ucBookForm.Genre = book.Genre;
+                    ucBookForm.PublishDate = book.PublishDate;
+                    ucBookForm.Pages = book.Pages;
+                    ucBookForm.Publisher = book.Publisher;
+                    ucBookForm.ISBN = book.ISBN;
+                    ucBookForm.Price = book.Price;
+                    ucBookForm.Language = book.Language;
+                    ucBookForm.AuthorId = book.AuthorId;
+                    
+                    ucBookForm.SetFormTitle("Editar Libro");
+                    ShowModal();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error al cargar libro: {ex.Message}", "error");
+            }
+        }
+
+        private async void DeleteBook(int bookId)
+        {
+            try
+            {
+                var response = await httpClient.DeleteAsync($"{API_BASE_URL}/books/{bookId}");
+                if (response.IsSuccessStatusCode)
+                {
+                    ShowMessage("Libro eliminado correctamente", "success");
+                    LoadBooks();
+                }
+                else
+                {
+                    ShowMessage("Error al eliminar el libro", "error");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error al eliminar libro: {ex.Message}", "error");
+            }
+        }
+
+        private async void UcBookSearch_SearchRequested(object sender, EventArgs e)
+        {
+            try
+            {
+                var searchControl = (BookSearch)sender;
+                var url = $"{API_BASE_URL}/books/search?title={searchControl.Title}&genre={searchControl.Genre}&authorName={searchControl.AuthorName}";
+                
+                var response = await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
+                    gvLibros.DataSource = books;
+                    gvLibros.DataBind();
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error en la búsqueda: {ex.Message}", "error");
+            }
+        }
+
+        private void UcBookSearch_ClearRequested(object sender, EventArgs e)
+        {
+            LoadBooks();
+        }
+
+        private async void UcBookForm_SaveRequested(object sender, EventArgs e)
+        {
+            try
+            {
+                var book = new BookDto
+                {
+                    Id = ucBookForm.BookId,
+                    Title = ucBookForm.Title,
+                    Genre = ucBookForm.Genre,
+                    PublishDate = ucBookForm.PublishDate,
+                    Pages = ucBookForm.Pages,
+                    Publisher = ucBookForm.Publisher,
+                    ISBN = ucBookForm.ISBN,
+                    Price = ucBookForm.Price,
+                    Language = ucBookForm.Language,
+                    AuthorId = ucBookForm.AuthorId
+                };
+
+                var json = JsonConvert.SerializeObject(book);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response;
+                if (book.Id == 0)
+                {
+                    response = await httpClient.PostAsync($"{API_BASE_URL}/books", content);
+                }
+                else
+                {
+                    response = await httpClient.PutAsync($"{API_BASE_URL}/books/{book.Id}", content);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    ShowMessage(book.Id == 0 ? "Libro creado correctamente" : "Libro actualizado correctamente", "success");
+                    HideModal();
+                    LoadBooks();
+                }
+                else
+                {
+                    ShowMessage("Error al guardar el libro", "error");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error al guardar libro: {ex.Message}", "error");
+            }
+        }
+
+        private void UcBookForm_CancelRequested(object sender, EventArgs e)
+        {
+            HideModal();
+        }
+
+        private void ShowModal()
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showBookModal();", true);
+        }
+
+        private void HideModal()
+        {
+            ScriptManager.RegisterStartupScript(this, GetType(), "HideModal", "hideBookModal();", true);
+        }
+
+        private void ShowMessage(string message, string type)
+        {
+            string script = $"showMessage('{message}', '{type}');";
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
+        }
+
+        public class BookDto
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Genre { get; set; }
+            public DateTime PublishDate { get; set; }
+            public int Pages { get; set; }
+            public string Publisher { get; set; }
+            public string ISBN { get; set; }
+            public decimal Price { get; set; }
+            public string Language { get; set; }
+            public int AuthorId { get; set; }
+            public string AuthorName { get; set; }
+        }
+
+        public class AuthorDto
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public DateTime BirthDate { get; set; }
+            public string Nationality { get; set; }
         }
     }
 }

@@ -1,83 +1,110 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using Libreria_InvestYPrincipal_Api.Models;
+using Libreria_InvestYPrincipal_Api.Services;
 
 namespace Libreria_InvestYPrincipal_Api.Controllers
 {
-    public class BooksController : Controller
+    [ApiController]
+    [Route("api/[controller]")]
+    public class BooksController : ControllerBase
     {
-        // GET: BooksController
-        public ActionResult Index()
+        private readonly IBookService _bookService;
+
+        public BooksController(IBookService bookService)
         {
-            return View();
+            _bookService = bookService;
         }
 
-        // GET: BooksController/Details/5
-        public ActionResult Details(int id)
+        /// <summary>
+        /// Obtiene todos los libros
+        /// </summary>
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return View();
+            var books = await _bookService.GetAllBooksAsync();
+            return Ok(books);
         }
 
-        // GET: BooksController/Create
-        public ActionResult Create()
+        /// <summary>
+        /// Obtiene un libro por ID
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            return View();
+            var book = await _bookService.GetBookByIdAsync(id);
+            if (book == null)
+            {
+                return NotFound();
+            }
+            return Ok(book);
         }
 
-        // POST: BooksController/Create
+        /// <summary>
+        /// Busca libros con filtros opcionales
+        /// </summary>
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks(
+            [FromQuery] string? title, 
+            [FromQuery] string? genre, 
+            [FromQuery] string? authorName)
+        {
+            var books = await _bookService.SearchBooksAsync(title, genre, authorName);
+            return Ok(books);
+        }
+
+        /// <summary>
+        /// Crea un nuevo libro
+        /// </summary>
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<ActionResult<Book>> CreateBook(Book book)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                return BadRequest(ModelState);
             }
-            catch
-            {
-                return View();
-            }
+
+            var createdBook = await _bookService.CreateBookAsync(book);
+            return CreatedAtAction(nameof(GetBook), new { id = createdBook.Id }, createdBook);
         }
 
-        // GET: BooksController/Edit/5
-        public ActionResult Edit(int id)
+        /// <summary>
+        /// Actualiza un libro existente
+        /// </summary>
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBook(int id, Book book)
         {
-            return View();
+            if (id != book.Id)
+            {
+                return BadRequest();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedBook = await _bookService.UpdateBookAsync(id, book);
+            if (updatedBook == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
 
-        // POST: BooksController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        /// <summary>
+        /// Elimina un libro
+        /// </summary>
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
         {
-            try
+            var result = await _bookService.DeleteBookAsync(id);
+            if (!result)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: BooksController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: BooksController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            return NoContent();
         }
     }
 }
