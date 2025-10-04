@@ -16,9 +16,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             _authorService = authorService;
         }
 
-        /// <summary>
         /// Obtiene todos los autores
-        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
         {
@@ -26,9 +24,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return Ok(authors);
         }
 
-        /// <summary>
         /// Obtiene un autor por ID
-        /// </summary>
         [HttpGet("{id}")]
         public async Task<ActionResult<Author>> GetAuthor(int id)
         {
@@ -40,9 +36,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return Ok(author);
         }
 
-        /// <summary>
         /// Crea un nuevo autor
-        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Author>> CreateAuthor(Author author)
         {
@@ -55,9 +49,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return CreatedAtAction(nameof(GetAuthor), new { id = createdAuthor.Id }, createdAuthor);
         }
 
-        /// <summary>
         /// Actualiza un autor existente
-        /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuthor(int id, Author author)
         {
@@ -80,9 +72,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return NoContent();
         }
 
-        /// <summary>
         /// Elimina un autor
-        /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {

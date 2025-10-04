@@ -7,13 +7,14 @@ using System.Web.UI.WebControls;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
+using Libreria_InvestYPrincipal_Web.Dto;
 
 namespace Libreria_InvestYPrincipal_Web.Pages
 {
     public partial class Authors : System.Web.UI.Page
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        private const string API_BASE_URL = "https://localhost:7000/api";
+        private const string API_BASE_URL = "https://localhost:7000/api";//Verificar esto
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -181,12 +182,5 @@ namespace Libreria_InvestYPrincipal_Web.Pages
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
         }
 
-        public class AuthorDto
-        {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public DateTime BirthDate { get; set; }
-            public string Nationality { get; set; }
-        }
     }
 }

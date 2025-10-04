@@ -51,6 +51,7 @@ cd Libreria-InvestYPrincipal-Api
 dotnet restore
 
 # Crear la base de datos
+dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 

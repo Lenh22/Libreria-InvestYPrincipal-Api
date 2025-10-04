@@ -15,9 +15,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             _bookService = bookService;
         }
 
-        /// <summary>
         /// Obtiene todos los libros
-        /// </summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
@@ -25,9 +23,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return Ok(books);
         }
 
-        /// <summary>
         /// Obtiene un libro por ID
-        /// </summary>
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
         {
@@ -39,9 +35,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return Ok(book);
         }
 
-        /// <summary>
         /// Busca libros con filtros opcionales
-        /// </summary>
         [HttpGet("search")]
         public async Task<ActionResult<IEnumerable<Book>>> SearchBooks(
             [FromQuery] string? title, 
@@ -52,9 +46,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return Ok(books);
         }
 
-        /// <summary>
         /// Crea un nuevo libro
-        /// </summary>
         [HttpPost]
         public async Task<ActionResult<Book>> CreateBook(Book book)
         {
@@ -67,9 +59,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return CreatedAtAction(nameof(GetBook), new { id = createdBook.Id }, createdBook);
         }
 
-        /// <summary>
         /// Actualiza un libro existente
-        /// </summary>
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, Book book)
         {
@@ -92,9 +82,7 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
             return NoContent();
         }
 
-        /// <summary>
         /// Elimina un libro
-        /// </summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
