@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BookSearch.ascx.cs" Inherits="Libreria_InvestYPrincipal_Web.UserControls.BookSearch" %>
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BookSearch.ascx.cs" Inherits="Libreria_InvestYPrincipal_Web.UserControls.BookSearch" %>
 <div class="card mb-4">
     <div class="card-header">
         <h5 class="mb-0">Búsqueda de Libros</h5>

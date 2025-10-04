@@ -21,7 +21,9 @@ namespace Libreria_InvestYPrincipal_Web.Pages
             if (!IsPostBack)
             {
                 LoadAuthors();
+                cvBirthDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
             }
+
         }
 
         private async void LoadAuthors()

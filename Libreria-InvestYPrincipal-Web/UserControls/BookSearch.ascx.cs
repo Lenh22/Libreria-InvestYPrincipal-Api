@@ -1,5 +1,8 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.UI;
+using System.Web.UI.WebControls;
+using Libreria_InvestYPrincipal_Web.Dto;
 
 namespace Libreria_InvestYPrincipal_Web.UserControls
 {
@@ -7,12 +10,25 @@ namespace Libreria_InvestYPrincipal_Web.UserControls
     {
         public event EventHandler SearchRequested;
         public event EventHandler ClearRequested;
+        public event EventHandler<BookSelectedEventArgs> BookSelected;
 
         public string Title => txtTitle.Text.Trim();
         public string Genre => txtGenre.Text.Trim();
         public string AuthorName => txtAuthorName.Text.Trim();
 
-        protected void btnSearch_Click(object sender, EventArgs e)
+        public List<BookDto> SearchResults
+        {
+            get { return (List<BookDto>)ViewState["SearchResults"] ?? new List<BookDto>(); }
+            set 
+            { 
+                ViewState["SearchResults"] = value;
+                gvSearchResults.DataSource = value;
+                gvSearchResults.DataBind();
+                searchResultsSection.Visible = value != null && value.Count > 0;
+            }
+        }
+
+        protected void SearchBooks_Click(object sender, EventArgs e)
         {
             SearchRequested?.Invoke(this, e);
         }
@@ -22,7 +38,36 @@ namespace Libreria_InvestYPrincipal_Web.UserControls
             txtTitle.Text = string.Empty;
             txtGenre.Text = string.Empty;
             txtAuthorName.Text = string.Empty;
+            SearchResults = new List<BookDto>();
             ClearRequested?.Invoke(this, e);
+        }
+
+        protected void gvSearchResults_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            if (e.CommandName == "Select")
+            {
+                int bookId = Convert.ToInt32(e.CommandArgument);
+                var selectedBook = SearchResults.Find(b => b.Id == bookId);
+                if (selectedBook != null)
+                {
+                    BookSelected?.Invoke(this, new BookSelectedEventArgs(selectedBook));
+                }
+            }
+        }
+
+        public void ClearSearchResults()
+        {
+            SearchResults = new List<BookDto>();
+        }
+    }
+
+    public class BookSelectedEventArgs : EventArgs
+    {
+        public BookDto SelectedBook { get; }
+
+        public BookSelectedEventArgs(BookDto book)
+        {
+            SelectedBook = book;
         }
     }
 }

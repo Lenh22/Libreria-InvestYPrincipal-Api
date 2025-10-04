@@ -102,9 +102,11 @@
                                             <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="rfvBirthDate" runat="server" ControlToValidate="txtBirthDate" 
                                                 ErrorMessage="La fecha de nacimiento es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate" 
-                                                Type="Date" Operator="LessThanEqual" ValueToCompare="<%# DateTime.Now.ToString(\"yyyy-MM-dd\") %>"
-                                                ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic"></asp:CompareValidator>
+                                            <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate"
+                                                Type="Date" Operator="LessThanEqual"
+                                                ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic">
+                                            </asp:CompareValidator>
+
                                         </div>
                                         
                                         <div class="mb-3">

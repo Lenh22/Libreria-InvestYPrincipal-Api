@@ -31,6 +31,7 @@ namespace Libreria_InvestYPrincipal_Web.Pages
         {
             ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
             ucBookSearch.ClearRequested += UcBookSearch_ClearRequested;
+            ucBookSearch.BookSelected += UcBookSearch_BookSelected;
             ucBookForm.SaveRequested += UcBookForm_SaveRequested;
             ucBookForm.CancelRequested += UcBookForm_CancelRequested;
         }
@@ -156,7 +157,7 @@ namespace Libreria_InvestYPrincipal_Web.Pages
         {
             try
             {
-                var searchControl = (BookSearch)sender;
+                var searchControl = (UserControls.BookSearch)sender;
                 var url = $"{API_BASE_URL}/books/search?title={searchControl.Title}&genre={searchControl.Genre}&authorName={searchControl.AuthorName}";
                 
                 var response = await httpClient.GetAsync(url);
@@ -164,8 +165,9 @@ namespace Libreria_InvestYPrincipal_Web.Pages
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
-                    gvLibros.DataSource = books;
-                    gvLibros.DataBind();
+                    
+                    // Mostrar resultados en el GridView del UserControl
+                    searchControl.SearchResults = books;
                 }
             }
             catch (Exception ex)
@@ -176,7 +178,14 @@ namespace Libreria_InvestYPrincipal_Web.Pages
 
         private void UcBookSearch_ClearRequested(object sender, EventArgs e)
         {
+            ucBookSearch.ClearSearchResults();
             LoadBooks();
+        }
+
+        private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e)
+        {
+            // Cargar el libro seleccionado en el formulario para edición
+            LoadBookForEdit(e.SelectedBook.Id);
         }
 
         private async void UcBookForm_SaveRequested(object sender, EventArgs e)

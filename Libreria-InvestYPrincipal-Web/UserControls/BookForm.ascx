@@ -1,5 +1,4 @@
-<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BookForm.ascx.cs" Inherits="Libreria_InvestYPrincipal_Web.UserControls.BookForm" %>
-
+﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BookForm.ascx.cs" Inherits="Libreria_InvestYPrincipal_Web.UserControls.BookForm" %>
 <div class="card">
     <div class="card-header">
         <h5 class="mb-0">
@@ -47,9 +46,11 @@
                     <asp:TextBox ID="txtPublishDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                     <asp:RequiredFieldValidator ID="rfvPublishDate" runat="server" ControlToValidate="txtPublishDate" 
                         ErrorMessage="La fecha de publicación es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                    <asp:CompareValidator ID="cvPublishDate" runat="server" ControlToValidate="txtPublishDate" 
-                        Type="Date" Operator="LessThanEqual" ValueToCompare="<%# DateTime.Now.ToString(\"yyyy-MM-dd\") %>"
-                        ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic"></asp:CompareValidator>
+                    <asp:CompareValidator ID="cvPublishDate" runat="server" ControlToValidate="txtPublishDate"
+                        Type="Date" Operator="LessThanEqual"
+                        ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic">
+                    </asp:CompareValidator>
+
                 </div>
             </div>
             <div class="col-md-6">

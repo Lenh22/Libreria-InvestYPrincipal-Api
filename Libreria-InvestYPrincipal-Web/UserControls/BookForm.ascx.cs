@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Libreria_InvestYPrincipal_Web.Dto;
 
 namespace Libreria_InvestYPrincipal_Web.UserControls
 {
@@ -8,6 +9,15 @@ namespace Libreria_InvestYPrincipal_Web.UserControls
     {
         public event EventHandler SaveRequested;
         public event EventHandler CancelRequested;
+
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            if (!IsPostBack)
+            {
+                // Configurar la validación de fecha para que no sea futura
+                cvPublishDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
+            }
+        }
 
         public int BookId
         {
@@ -106,6 +116,27 @@ namespace Libreria_InvestYPrincipal_Web.UserControls
             txtPrice.Text = string.Empty;
             ddlLanguage.SelectedIndex = 0;
             ddlAuthor.SelectedIndex = 0;
+        }
+
+        public BookDto SaveBook()
+        {
+            if (Page.IsValid)
+            {
+                return new BookDto
+                {
+                    Id = BookId,
+                    Title = Title,
+                    Genre = Genre,
+                    PublishDate = PublishDate,
+                    Pages = Pages,
+                    Publisher = Publisher,
+                    ISBN = ISBN,
+                    Price = Price,
+                    Language = Language,
+                    AuthorId = AuthorId
+                };
+            }
+            return null;
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
