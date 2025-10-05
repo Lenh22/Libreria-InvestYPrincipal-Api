@@ -2,7 +2,7 @@ using Libreria_InvestYPrincipal_Api.Models;
 
 namespace Libreria_InvestYPrincipal_Api.Data
 {
-    public static class SeedData
+    public static class SeedData //Datos de inicializacion (Como un Mockeo)
     {
         public static void Initialize(LibraryDbContext context)
         {

@@ -1,67 +1,70 @@
-### Test API Endpoints
+### Test API Endpoints, con esto se pueden probar los endpoints rapidamente
+### AUTORES ###
 
 ### Get all authors
-GET https://localhost:7000/api/authors
+GET http://localhost:7000/api/authors
 Accept: application/json
 
 ### Get author by ID
-GET https://localhost:7000/api/authors/1
+GET http://localhost:7000/api/authors/1
 Accept: application/json
 
 ### Create new author
-POST https://localhost:7000/api/authors
+POST http://localhost:7000/api/authors
 Content-Type: application/json
 
 {
-  "name": "Gabriel García Márquez",
-  "birthDate": "1927-03-06",
-  "nationality": "Colombiana"
+  "name": "Gabriel Rolón",
+  "birthDate": "1961-11-01",
+  "nationality": "Argentino"
 }
 
 ### Update author
-PUT https://localhost:7000/api/authors/1
+PUT http://localhost:7000/api/authors/1
 Content-Type: application/json
 
 {
   "id": 1,
-  "name": "Gabriel García Márquez",
+  "name": "Gabriel García Márquez UPDATE",
   "birthDate": "1927-03-06",
-  "nationality": "Colombiana"
+  "nationality": "Colombiano"
 }
 
 ### Delete author
-DELETE https://localhost:7000/api/authors/1
+DELETE http://localhost:7000/api/authors/1
+
+### LIBROS ###
 
 ### Get all books
-GET https://localhost:7000/api/books
+GET http://localhost:7000/api/books
 Accept: application/json
 
 ### Get book by ID
-GET https://localhost:7000/api/books/1
+GET http://localhost:7000/api/books/1
 Accept: application/json
 
 ### Search books
-GET https://localhost:7000/api/books/search?title=cien&genre=Ficción&authorName=García
+GET http://localhost:7000/api/books/search?title=cien&genre=Ficción&authorName=García
 Accept: application/json
 
 ### Create new book
-POST https://localhost:7000/api/books
+POST http://localhost:7000/api/books
 Content-Type: application/json
 
 {
-  "title": "Cien años de soledad",
+  "title": "En agosto nos vemos",
   "genre": "Ficción",
-  "publishDate": "1967-06-05",
-  "pages": 471,
+  "publishDate": "2024-03-06",
+  "pages": 120,
   "publisher": "Editorial Sudamericana",
-  "isbn": "978-84-376-0494-7",
-  "price": 25.99,
+  "isbn": "978-95-007-7022-4",
+  "price": 29.99,
   "language": "Español",
   "authorId": 1
 }
 
 ### Update book
-PUT https://localhost:7000/api/books/1
+PUT http://localhost:7000/api/books/1
 Content-Type: application/json
 
 {
@@ -78,4 +81,4 @@ Content-Type: application/json
 }
 
 ### Delete book
-DELETE https://localhost:7000/api/books/1
+DELETE http://localhost:7000/api/books/1
