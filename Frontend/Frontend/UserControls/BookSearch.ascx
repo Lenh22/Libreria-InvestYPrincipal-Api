@@ -1,9 +1,5 @@
 <%@ Control Language="C#" AutoEventWireup="true" CodeBehind="BookSearch.ascx.cs" Inherits="Frontend.UserControls.BookSearch" %>
-<div class="card mb-4">
-    <div class="card-header">
-        <h5 class="mb-0">Book Search</h5>
-    </div>
-    <div class="card-body">
+<div class="card-body">
         <div class="row">
             <div class="col-md-4">
                 <label for="<%= txtTitle.ClientID %>" class="form-label">Title:</label>
@@ -44,5 +40,4 @@
                 </Columns>
             </asp:GridView>
         </div>
-    </div>
 </div>
