@@ -20,28 +20,40 @@ namespace Frontend.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
-            {
-                SetupEventHandlers();
-            }
+            // Page_Load vacío - la configuración se hace en Page_PreRender
         }
 
         protected async void Page_PreRender(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+                // Configurar eventos aquí para asegurar que los UserControls estén disponibles
+                SetupEventHandlers();
                 await LoadBooks();
                 await LoadAuthors();
             }
         }
 
+        private bool _eventsSetup = false;
+        
         private void SetupEventHandlers()
         {
-            ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
-            ucBookSearch.ClearRequested += UcBookSearch_ClearRequested;
-            ucBookSearch.BookSelected += UcBookSearch_BookSelected;
-            ucBookForm.SaveRequested += UcBookForm_SaveRequested;
-            ucBookForm.CancelRequested += UcBookForm_CancelRequested;
+            if (_eventsSetup) return; // Evitar suscripciones duplicadas
+            
+            if (ucBookSearch != null)
+            {
+                ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
+                ucBookSearch.ClearRequested += UcBookSearch_ClearRequested;
+                ucBookSearch.BookSelected += UcBookSearch_BookSelected;
+            }
+            
+            if (ucBookForm != null)
+            {
+                ucBookForm.SaveRequested += UcBookForm_SaveRequested;
+                ucBookForm.CancelRequested += UcBookForm_CancelRequested;
+            }
+            
+            _eventsSetup = true;
         }
 
         private async Task LoadBooks()
@@ -171,6 +183,10 @@ namespace Frontend.Pages
                     
                     // Mostrar resultados en el GridView del UserControl
                     searchControl.SearchResults = books;
+                }
+                else
+                {
+                    ShowMessage($"API Error: {response.StatusCode} - {response.ReasonPhrase}", "error");
                 }
             }
             catch (Exception ex)
