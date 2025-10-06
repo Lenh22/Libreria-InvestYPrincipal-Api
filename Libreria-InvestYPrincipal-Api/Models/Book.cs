@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 
 namespace Libreria_InvestYPrincipal_Api.Models
 {
@@ -44,6 +45,7 @@ namespace Libreria_InvestYPrincipal_Api.Models
         public int AuthorId { get; set; }
 
         [ForeignKey("AuthorId")]
+        [JsonIgnore] // Lo ignoramos? Para serializar a JSON
         public Author Author { get; set; } = null!;
     }
 }

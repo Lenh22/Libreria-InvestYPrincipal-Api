@@ -16,14 +16,12 @@ namespace Libreria_InvestYPrincipal_Api.Services
         public async Task<IEnumerable<Book>> GetAllBooksAsync()
         {
             return await _context.Books
-                .Include(b => b.Author)
                 .ToListAsync();
         }
 
         public async Task<Book?> GetBookByIdAsync(int id)
         {
             return await _context.Books
-                .Include(b => b.Author)
                 .FirstOrDefaultAsync(b => b.Id == id);
         }
 
@@ -72,7 +70,7 @@ namespace Libreria_InvestYPrincipal_Api.Services
 
         public async Task<IEnumerable<Book>> SearchBooksAsync(string? title, string? genre, string? authorName)
         {
-            var query = _context.Books.Include(b => b.Author).AsQueryable();
+            var query = _context.Books.AsQueryable();
 
             if (!string.IsNullOrEmpty(title))
             {
@@ -86,7 +84,8 @@ namespace Libreria_InvestYPrincipal_Api.Services
 
             if (!string.IsNullOrEmpty(authorName))
             {
-                query = query.Where(b => b.Author.Name.Contains(authorName));
+                // Buscar nombre de autor se necesita Joins
+                query = query.Where(b => _context.Authors.Any(a => a.Id == b.AuthorId && a.Name.Contains(authorName)));
             }
 
             return await query.ToListAsync();

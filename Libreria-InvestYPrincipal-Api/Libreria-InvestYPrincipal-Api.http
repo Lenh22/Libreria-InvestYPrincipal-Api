@@ -31,7 +31,7 @@ Content-Type: application/json
 }
 
 ### Delete author
-DELETE http://localhost:7000/api/authors/1
+DELETE http://localhost:7000/api/authors/9 ## Cambiar ID cuando se necesite
 
 ### LIBROS ###
 
@@ -69,7 +69,7 @@ Content-Type: application/json
 
 {
   "id": 1,
-  "title": "Cien años de soledad",
+  "title": "Cien años de soledad UPDATE",
   "genre": "Ficción",
   "publishDate": "1967-06-05",
   "pages": 471,
@@ -81,4 +81,4 @@ Content-Type: application/json
 }
 
 ### Delete book
-DELETE http://localhost:7000/api/books/1
+DELETE http://localhost:7000/api/books/6 
