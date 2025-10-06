@@ -25,7 +25,7 @@ body {
 
 /* Contenedor principal */
 .body-content {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
     min-height: calc(100vh - 200px);
 }
 
@@ -349,11 +349,13 @@ body {
     text-align: center;
 }
 
-/* Hero Section específico */
+/* Hero Section específico - Tamaños más proporcionados */
 .hero-section {
     background: linear-gradient(135deg, #0d6efd, #0056b3, #004085) !important;
     position: relative;
     overflow: hidden;
+    padding: 3rem 0 !important; /* Reducido de py-5 */
+    margin-bottom: 2rem !important; /* Reducido de mb-5 */
 }
 
 .hero-section::before {
@@ -376,12 +378,16 @@ body {
     color: white !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
     font-weight: 800;
+    font-size: 2.5rem !important; /* Reducido de display-4 */
+    margin-bottom: 1rem !important; /* Reducido de mb-4 */
 }
 
 .hero-section p {
     color: white !important;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     font-weight: 500;
+    font-size: 1.1rem !important; /* Reducido de lead */
+    margin-bottom: 1.5rem !important; /* Reducido de mb-4 */
 }
 
 .hero-section i {
@@ -389,13 +395,188 @@ body {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
+.hero-section .fa-library {
+    font-size: 6rem !important; /* Reducido de fa-10x */
+    opacity: 0.6;
+}
+
+/* Botones del hero con tamaño consistente */
+.hero-section .btn {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-width: 160px;
+    text-align: center;
+}
+
+.hero-section .btn-lg {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-width: 160px;
+    text-align: center;
+}
+
+/* Call to Action Section */
+.bg-gradient-primary h3,
+.bg-gradient-primary p {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botones consistentes en Call to Action */
+.bg-gradient-primary .btn {
+    background-color: white !important;
+    color: #0d6efd !important;
+    border: 2px solid white !important;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.bg-gradient-primary .btn:hover {
+    background-color: #f8f9fa !important;
+    color: #0d6efd !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.bg-gradient-primary .btn i {
+    color: #0d6efd !important;
+    margin-right: 0.5rem;
+}
+
+/* Botón especial para API Docs */
+.bg-gradient-primary .btn-success {
+    background-color: #198754 !important;
+    color: white !important;
+    border: 2px solid #198754 !important;
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.bg-gradient-primary .btn-success:hover {
+    background-color: #146c43 !important;
+    color: white !important;
+    border-color: #146c43 !important;
+}
+
+.bg-gradient-primary .btn-success i {
+    color: white !important;
+}
+
+/* Mejorar el contenedor de botones */
+.bg-gradient-primary .d-flex {
+    gap: 1rem !important;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Asegurar que todos los botones tengan el mismo tamaño */
+.bg-gradient-primary .btn-lg {
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Tamaño consistente para todos los botones de la aplicación */
+.btn {
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-sm {
+    min-width: 120px;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.btn-lg {
+    min-width: 160px;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Mejorar la parte inferior de la página */
+.container-fluid {
+    padding-bottom: 3rem;
+}
+
+/* Footer mejorado */
+footer {
+    margin-top: 4rem;
+    border-top: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+/* Espaciado mejorado para las secciones */
+.row {
+    margin-bottom: 1.5rem;
+}
+
+/* Espaciado específico para diferentes secciones */
+.mb-5 {
+    margin-bottom: 2rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+/* Mejorar las cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Mejorar los gradientes de headers */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd, #0056b3, #004085) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #198754, #146c43, #0f5132) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800, #d39e00) !important;
+}
+
 .section-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 600;
     color: var(--dark-color);
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
+}
+
+/* Títulos de cards más pequeños */
+.card-header h4 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0 !important;
+}
+
+.card-header h5 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
 }
 
 .section-title i {

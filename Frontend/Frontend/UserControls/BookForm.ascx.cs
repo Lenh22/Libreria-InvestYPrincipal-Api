@@ -122,7 +122,7 @@ namespace Frontend.UserControls
         public void LoadAuthors(IEnumerable<AuthorDto> authors)
         {
             ddlAuthor.Items.Clear();
-            ddlAuthor.Items.Add(new ListItem("Seleccionar autor...", ""));
+            ddlAuthor.Items.Add(new ListItem("Select author...", ""));
             
             foreach (var author in authors)
             {
