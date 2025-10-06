@@ -1,6 +1,6 @@
-# Sistema de Librería - API REST + WebForms
+# Sistema de Librería - Backend + Frontend
 
-Este proyecto implementa un **Sistema de Gestión de Librería** completo con arquitectura de microservicios, utilizando **.NET Core Web API** como backend y **ASP.NET WebForms** como frontend.
+Este proyecto implementa un **Sistema de Gestión de Librería** completo con arquitectura de microservicios, utilizando **.NET Core Web API** como Backend y **ASP.NET WebForms** como Frontend.
 
 ## 🏗️ Arquitectura del Sistema
 
@@ -44,8 +44,8 @@ Este proyecto implementa un **Sistema de Gestión de Librería** completo con ar
 ### 1. Configuración de la Base de Datos
 
 ```bash
-# Navegar al directorio de la API
-cd Libreria-InvestYPrincipal-Api
+# Navegar al directorio del Backend
+cd Backend
 
 # Instalar dependencias
 dotnet restore
@@ -55,31 +55,33 @@ dotnet ef migrations add InitialCreate
 dotnet ef database update
 ```
 
-### 2. Configuración de la API
+### 2. Configuración del Backend
 
 ```bash
-# Ejecutar la API
-cd Libreria-InvestYPrincipal-Api
+# Ejecutar el Backend
+cd Backend
 dotnet run
 ```
 
-La API estará disponible en:
-- **HTTPS**: https://localhost:7000
-- **Swagger UI**: https://localhost:7000/swagger
+El Backend estará disponible en:
+- **HTTP**: http://localhost:7000
+- **Swagger UI**: http://localhost:7000/swagger
 
 ### 3. Configuración del Frontend
 
 ```bash
 # Ejecutar el proyecto WebForms
-cd Libreria-InvestYPrincipal-Web
-# Abrir en Visual Studio y ejecutar con F5
+cd Frontend
+# Abrir Frontend.sln en Visual Studio y ejecutar con F5
 ```
 
 El frontend estará disponible en:
-- **HTTP**: http://localhost:5000
-- **HTTPS**: https://localhost:5001
+- **HTTPS**: https://localhost:44392
+- **Páginas principales**:
+  - Autores: https://localhost:44392/Pages/Authors.aspx
+  - Libros: https://localhost:44392/Pages/Books.aspx
 
-## 📚 Endpoints de la API
+## 📚 Endpoints del Backend
 
 ### Autores
 - `GET /api/authors` - Obtener todos los autores
@@ -157,8 +159,8 @@ El frontend estará disponible en:
 ## 🏛️ Arquitectura de Microservicios
 
 ### Separación de Responsabilidades
-- **API REST**: Lógica de negocio y acceso a datos
-- **WebForms**: Presentación y experiencia de usuario
+- **Backend (API REST)**: Lógica de negocio y acceso a datos
+- **Frontend (WebForms)**: Presentación y experiencia de usuario
 - **Comunicación**: HTTP/JSON entre capas
 
 ### Beneficios
@@ -167,30 +169,65 @@ El frontend estará disponible en:
 - **Testabilidad**: Servicios pueden probarse por separado
 - **Flexibilidad**: Fácil cambio de tecnologías en cada capa
 
+## 🔄 Migración y Nueva Estructura
+
+### ✅ Migración Completada
+El proyecto ha sido migrado exitosamente de la estructura original a una nueva arquitectura optimizada:
+
+**Antes:**
+```
+Libreria-InvestYPrincipal-Web/ (Proyecto original con problemas)
+```
+
+**Ahora:**
+```
+Backend/ (Backend API)
+Frontend/ (Frontend WebForms)
+```
+
+### 🔧 Cambios Realizados
+- **✅ Namespaces**: Actualizados de `Libreria_InvestYPrincipal_Web` a `Frontend`
+- **✅ Referencias**: Corregidas todas las dependencias y using statements
+- **✅ Operaciones asíncronas**: Implementadas correctamente con `Async="true"`
+- **✅ User Controls**: Accesibilidad y referencias corregidas
+- **✅ URLs de Backend**: Configuradas para `http://localhost:7000/api`
+- **✅ ContentPlaceHolder**: Agregado `head` en Site.Master
+
+### 🚀 URLs de Acceso
+- **Backend (API)**: http://localhost:7000
+- **Swagger UI**: http://localhost:7000/swagger
+- **Frontend WebForms**: https://localhost:44392
+- **Páginas principales**:
+  - Autores: https://localhost:44392/Pages/Authors.aspx
+  - Libros: https://localhost:44392/Pages/Books.aspx
+- **Documentación Backend**: Disponible en Swagger UI
+
 ## 📊 Estructura del Proyecto
 
 ```
-Libreria-TP-Api-Web/
-├── Libreria-InvestYPrincipal-Api/          # Backend API
-│   ├── Controllers/                        # Controladores REST
-│   ├── Models/                            # Entidades del dominio
-│   ├── Services/                          # Lógica de negocio
-│   ├── Data/                              # Contexto de EF
-│   └── Program.cs                         # Configuración de la API
-├── Libreria-InvestYPrincipal-Web/          # Frontend WebForms
-│   ├── Pages/                             # Páginas principales
-│   ├── MasterPages/                       # Layouts
-│   ├── UserControls/                      # Componentes reutilizables
-│   └── Web.config                         # Configuración del frontend
-└── README.md                              # Este archivo
+Libreria-InvestYPrincipal-Api/
+├── Backend/                               # Backend API
+│   ├── Controllers/                       # Controladores REST
+│   ├── Models/                           # Entidades del dominio
+│   ├── Services/                         # Lógica de negocio
+│   ├── Data/                             # Contexto de EF
+│   └── Program.cs                        # Configuración del Backend
+├── Frontend/                             # Frontend WebForms
+│   └── Frontend/                         # Proyecto WebForms
+│       ├── Pages/                        # Páginas principales
+│       ├── MasterPages/                  # Layouts
+│       ├── UserControls/                 # Componentes reutilizables
+│       ├── Dto/                          # Data Transfer Objects
+│       └── Web.config                    # Configuración del frontend
+└── README.md                             # Este archivo
 ```
 
 ## 🧪 Testing
 
 ### Swagger UI
-- Acceder a https://localhost:7000/swagger
+- Acceder a http://localhost:7000/swagger
 - Probar todos los endpoints directamente
-- Ver documentación automática de la API
+- Ver documentación automática del Backend
 
 ### Postman
 - Importar colección desde el archivo `.http`
@@ -200,13 +237,13 @@ Libreria-TP-Api-Web/
 ## 🚀 Despliegue
 
 ### Desarrollo Local
-1. Ejecutar la API: `dotnet run` en el directorio de la API
-2. Ejecutar el frontend: F5 en Visual Studio
-3. Acceder a https://localhost:7000/swagger para probar la API
-4. Acceder a http://localhost:5000 para usar la aplicación
+1. Ejecutar el Backend: `dotnet run` en el directorio del Backend
+2. Ejecutar el frontend: F5 en Visual Studio (abrir Frontend.sln)
+3. Acceder a http://localhost:7000/swagger para probar el Backend
+4. Acceder a https://localhost:44392 para usar la aplicación
 
 ### Producción
-- **API**: Desplegar en Azure App Service o IIS
+- **Backend**: Desplegar en Azure App Service o IIS
 - **Frontend**: Desplegar en IIS
 - **Base de Datos**: SQL Server en Azure o servidor dedicado
 

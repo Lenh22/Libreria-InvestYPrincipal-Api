@@ -16,7 +16,7 @@ namespace Frontend.Pages
     public partial class Books : System.Web.UI.Page
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        private const string API_BASE_URL = "https://localhost:7000/api"; //Verificar esto
+        private const string API_BASE_URL = "http://localhost:7000/api";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -260,5 +260,15 @@ namespace Frontend.Pages
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
         }
 
+        protected void gvLibros_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Actualizar contador de libros
+                int bookCount = gvLibros.Rows.Count;
+                string script = $"document.getElementById('bookCount').textContent = '{bookCount} books';";
+                ScriptManager.RegisterStartupScript(this, GetType(), "UpdateBookCount", script, true);
+            }
+        }
     }
 }

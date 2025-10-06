@@ -1,7 +1,7 @@
-<%@ Page Title="Autores" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Authors.aspx.cs" Inherits="Frontend.Pages.Authors" Async="true" %>
+<%@ Page Title="Authors" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Authors.aspx.cs" Inherits="Frontend.Pages.Authors" Async="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
-    <title>Gestión de Autores</title>
+    <title>Author Management</title>
     <script type="text/javascript">
         function showAuthorModal() {
             var modal = new bootstrap.Modal(document.getElementById('authorModal'));
@@ -41,50 +41,84 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container-fluid">
+        <!-- Header Section -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="page-title mb-2">
+                            <i class="fas fa-user-edit text-primary me-3"></i>Author Management
+                        </h1>
+                        <p class="text-muted">Manage your author database efficiently</p>
+                    </div>
+                    <div>
+                        <asp:Button ID="btnNewAuthor" runat="server" Text="New Author" 
+                            CssClass="btn btn-primary btn-lg shadow" OnClick="btnNewAuthor_Click" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Authors Grid Section -->
         <div class="row">
             <div class="col-12">
-                <h2 class="mb-4">Gestión de Autores</h2>
-                
-                <!-- Action Buttons -->
-                <div class="mb-3">
-                    <asp:Button ID="btnNewAuthor" runat="server" Text="Nuevo Autor" CssClass="btn btn-primary" OnClick="btnNewAuthor_Click" />
-                </div>
-                
-                <!-- Authors Grid -->
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="mb-0">Lista de Autores</h5>
+                <div class="card shadow-sm">
+                    <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="fas fa-list me-2"></i>Author List
+                        </h5>
+                        <span class="badge bg-light text-dark" id="authorCount">0 authors</span>
                     </div>
-                    <div class="card-body">
-                        <asp:GridView ID="gvAutores" runat="server" AutoGenerateColumns="false" CssClass="table table-striped table-hover"
-                            OnRowCommand="gvAutores_RowCommand" DataKeyNames="Id">
-                            <Columns>
-                                <asp:BoundField DataField="Id" HeaderText="ID" />
-                                <asp:BoundField DataField="Name" HeaderText="Nombre" />
-                                <asp:BoundField DataField="BirthDate" HeaderText="Fecha Nacimiento" DataFormatString="{0:dd/MM/yyyy}" />
-                                <asp:BoundField DataField="Nationality" HeaderText="Nacionalidad" />
-                                <asp:TemplateField HeaderText="Acciones">
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnEdit" runat="server" Text="Editar" CssClass="btn btn-sm btn-warning me-1" 
-                                            CommandName="Edit" CommandArgument='<%# Eval("Id") %>' />
-                                        <asp:Button ID="btnDelete" runat="server" Text="Eliminar" CssClass="btn btn-sm btn-danger" 
-                                            CommandName="Delete" CommandArgument='<%# Eval("Id") %>' 
-                                            OnClientClick="return confirm('¿Está seguro de que desea eliminar este autor?');" />
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                        </asp:GridView>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <asp:GridView ID="gvAutores" runat="server" AutoGenerateColumns="false" 
+                                CssClass="table table-hover mb-0"
+                                OnRowCommand="gvAutores_RowCommand" DataKeyNames="Id">
+                                <Columns>
+                                    <asp:BoundField DataField="Id" HeaderText="ID" ItemStyle-CssClass="fw-bold text-primary" />
+                                    <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-CssClass="fw-semibold" />
+                                    <asp:BoundField DataField="BirthDate" HeaderText="Birth Date" DataFormatString="{0:dd/MM/yyyy}" />
+                                    <asp:BoundField DataField="Nationality" HeaderText="Nationality" ItemStyle-CssClass="text-muted" />
+                                    <asp:TemplateField HeaderText="Actions" ItemStyle-Width="150">
+                                        <ItemTemplate>
+                                            <div class="btn-group" role="group">
+                                                <asp:Button ID="btnEdit" runat="server" Text="Edit" 
+                                                    CssClass="btn btn-sm btn-warning me-1" 
+                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>' />
+                                                <asp:Button ID="btnDelete" runat="server" Text="Delete" 
+                                                    CssClass="btn btn-sm btn-danger" 
+                                                    CommandName="Delete" CommandArgument='<%# Eval("Id") %>' 
+                                                    OnClientClick="return confirm('Are you sure you want to delete this author?');" />
+                                            </div>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <EmptyDataTemplate>
+                                    <div class="text-center py-5">
+                                        <i class="fas fa-user-edit fa-3x text-muted mb-3"></i>
+                                        <h5 class="text-muted">No authors registered</h5>
+                                        <p class="text-muted">Start by adding your first author to the database</p>
+                                        <asp:Button ID="btnAddFirstAuthor" runat="server" Text="Add First Author" 
+                                            CssClass="btn btn-primary" OnClick="btnNewAuthor_Click" />
+                                    </div>
+                                </EmptyDataTemplate>
+                            </asp:GridView>
+                        </div>
                     </div>
                 </div>
+            </div>
+        </div>
                 
-                <!-- Author Form Modal -->
-                <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="authorModalLabel">Autor</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
+        <!-- Author Form Modal -->
+        <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header bg-gradient-primary text-white">
+                        <h5 class="modal-title" id="authorModalLabel">
+                            <i class="fas fa-user-edit me-2"></i>Author Form
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
                             <div class="modal-body">
                                 <div class="card">
                                     <div class="card-body">

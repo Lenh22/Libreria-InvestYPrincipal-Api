@@ -15,7 +15,7 @@ namespace Frontend.Pages
     public partial class Authors : System.Web.UI.Page
     {
         private static readonly HttpClient httpClient = new HttpClient();
-        private const string API_BASE_URL = "https://localhost:7000/api";//Verificar esto
+        private const string API_BASE_URL = "http://localhost:7000/api";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,6 +44,11 @@ namespace Frontend.Pages
                     var authors = JsonConvert.DeserializeObject<List<AuthorDto>>(json);
                     gvAutores.DataSource = authors;
                     gvAutores.DataBind();
+                    
+                    // Actualizar contador de autores
+                    int authorCount = authors?.Count ?? 0;
+                    string script = $"document.getElementById('authorCount').textContent = '{authorCount} authors';";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "UpdateAuthorCount", script, true);
                 }
             }
             catch (Exception ex)
