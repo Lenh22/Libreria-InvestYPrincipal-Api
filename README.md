@@ -11,9 +11,10 @@ Este proyecto implementa un **Sistema de Gestión de Librería** completo con ar
 - **Arquitectura**: N-Capas (Models, Controllers, Services, Data)
 
 ### Frontend (Cliente Web)
-- **Tecnología**: ASP.NET WebForms
-- **UI Framework**: Bootstrap 5
-- **Comunicación**: HTTP/JSON con la API REST
+- **Tecnología**: ASP.NET WebForms (.NET Framework 4.7.2)
+- **UI Framework**: Bootstrap 5.2.3
+- **Iconos**: Font Awesome 6.4.0
+- **Comunicación**: HTTP/JSON con Newtonsoft.Json 13.0.3
 - **Validaciones**: Cliente y servidor
 
 ## 📋 Características Principales
@@ -103,18 +104,20 @@ El frontend estará disponible en:
 ### Backend (API)
 - **Entity Framework Core**: Code First con migraciones
 - **Swagger**: Documentación automática de la API
-- **CORS**: Configurado para permitir requests del frontend
+- **CORS**: Configurado para permitir requests del frontend (puertos 5000, 5001, 44392)
 - **Validaciones**: Data Annotations en modelos
 - **Servicios**: Inyección de dependencias
 - **Async/Await**: Operaciones asíncronas
 
 ### Frontend (WebForms)
-- **Master Pages**: Layout consistente
-- **User Controls**: Componentes reutilizables
+- **Master Pages**: Layout consistente con Site.Master
+- **User Controls**: Componentes reutilizables (BookForm, BookSearch)
 - **Validaciones**: RequiredFieldValidator, RangeValidator, CompareValidator
-- **Bootstrap**: UI moderna y responsive
-- **HTTP Client**: Comunicación con la API
+- **Bootstrap 5.2.3**: UI moderna y responsive
+- **Font Awesome 6.4.0**: Iconografía profesional
+- **HTTP Client**: Comunicación asíncrona con la API
 - **Modales**: Formularios en ventanas emergentes
+- **jQuery 3.7.0**: Interactividad y manipulación DOM
 
 ## 🔧 Validaciones Implementadas
 
@@ -215,9 +218,9 @@ Libreria-InvestYPrincipal-Api/
 ├── Frontend/                             # Frontend WebForms
 │   └── Frontend/                         # Proyecto WebForms
 │       ├── Pages/                        # Páginas principales
-│       ├── MasterPages/                  # Layouts
 │       ├── UserControls/                 # Componentes reutilizables
 │       ├── Dto/                          # Data Transfer Objects
+│       ├── Site.Master                   # Master Page principal
 │       └── Web.config                    # Configuración del frontend
 └── README.md                             # Este archivo
 ```
@@ -250,11 +253,14 @@ Libreria-InvestYPrincipal-Api/
 ## 📝 Notas de Desarrollo
 
 ### Tecnologías Utilizadas
-- **.NET Core 8.0**: Framework principal
-- **Entity Framework Core 9.0**: ORM
-- **Swagger**: Documentación de API
-- **Bootstrap 5**: Framework CSS
-- **Newtonsoft.Json**: Serialización JSON
+- **.NET Core 8.0**: Framework principal del Backend
+- **.NET Framework 4.7.2**: Framework del Frontend
+- **Entity Framework Core 8.0**: ORM
+- **Swagger/OpenAPI**: Documentación de API
+- **Bootstrap 5.2.3**: Framework CSS responsive
+- **Font Awesome 6.4.0**: Iconografía profesional
+- **Newtonsoft.Json 13.0.3**: Serialización JSON
+- **jQuery 3.7.0**: Manipulación DOM y AJAX
 
 ### Patrones Implementados
 - **Repository Pattern**: A través de Entity Framework

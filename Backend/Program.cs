@@ -29,7 +29,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowWebForms", policy =>
     {
-        policy.WithOrigins("http://localhost:5000", "https://localhost:5001")
+        policy.WithOrigins("http://localhost:5000", "https://localhost:5001", "https://localhost:44392")
               .AllowAnyHeader()
               .AllowAnyMethod();
     });

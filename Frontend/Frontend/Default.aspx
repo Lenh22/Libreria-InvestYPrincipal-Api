@@ -11,7 +11,7 @@
                         <i class="fas fa-book-open me-3"></i>InvestYPrincipal Library
                     </h1>
                     <p class="lead mb-4 text-white">
-                        A modern and efficient library management system built with ASP.NET Web Forms and .NET Core API. 
+                        A modern and efficient library management system built with ASP.NET Web Forms (.NET Framework 4.7.2) and .NET Core 8.0 API. 
                         Manage your book catalog and authors with ease using our intuitive interface.
                     </p>
                     <div class="d-flex gap-3">
@@ -104,11 +104,11 @@
                                 <ul class="list-unstyled">
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
-                                        <strong>.NET Core 6.0</strong> - Modern, cross-platform framework
+                                        <strong>.NET Core 8.0</strong> - Modern, cross-platform framework
                                     </li>
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Entity Framework Core</strong> - Object-relational mapping
+                                        <strong>Entity Framework Core 8.0</strong> - Object-relational mapping
                                     </li>
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
@@ -127,15 +127,23 @@
                                 <ul class="list-unstyled">
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
-                                        <strong>ASP.NET Web Forms</strong> - Rapid web development
+                                        <strong>ASP.NET Web Forms (.NET Framework 4.7.2)</strong> - Rapid web development
                                     </li>
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Bootstrap 5</strong> - Responsive design framework
+                                        <strong>Bootstrap 5.2.3</strong> - Responsive design framework
                                     </li>
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
-                                        <strong>Font Awesome</strong> - Professional icons
+                                        <strong>Font Awesome 6.4.0</strong> - Professional icons
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>jQuery 3.7.0</strong> - DOM manipulation and AJAX
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="fas fa-check text-success me-2"></i>
+                                        <strong>Newtonsoft.Json 13.0.3</strong> - JSON serialization
                                     </li>
                                     <li class="mb-2">
                                         <i class="fas fa-check text-success me-2"></i>
