@@ -44,6 +44,6 @@ namespace Libreria_InvestYPrincipal_Api.Models
         public int AuthorId { get; set; }
 
         [ForeignKey("AuthorId")]
-        public Author Author { get; set; } = null!;
+        public Author? Author { get; set; }
     }
 }

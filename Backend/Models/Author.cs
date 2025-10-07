@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Libreria_InvestYPrincipal_Api.Models
 {
@@ -17,7 +18,7 @@ namespace Libreria_InvestYPrincipal_Api.Models
         [Required(ErrorMessage = "La nacionalidad es obligatoria")]
         [StringLength(50, ErrorMessage = "La nacionalidad no puede exceder 50 caracteres")]
         public string Nationality { get; set; } = string.Empty;
-
+        [JsonIgnore]
         public ICollection<Book> Books { get; set; } = new List<Book>();
     }
 }
