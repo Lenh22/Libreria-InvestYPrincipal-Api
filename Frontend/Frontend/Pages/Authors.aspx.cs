@@ -64,19 +64,28 @@ namespace Frontend.Pages
             ClearForm();
             ShowModal();
         }
-
-        protected async void gvAutores_RowCommand(object sender, GridViewCommandEventArgs e)
+        //RegisterAsyncTask para la asyncronia en web form clasico
+        protected void gvAutores_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
             {
                 int authorId = Convert.ToInt32(e.CommandArgument);
-                await LoadAuthorForEdit(authorId);
+                RegisterAsyncTask(new PageAsyncTask(async () => await LoadAuthorForEdit(authorId)));
             }
             else if (e.CommandName == "Delete")
             {
                 int authorId = Convert.ToInt32(e.CommandArgument);
-                await DeleteAuthor(authorId);
+                RegisterAsyncTask(new PageAsyncTask(async () => await DeleteAuthor(authorId)));
             }
+        }
+        // Para controlar los eventos RowEditing
+        protected void gvAutores_RowCancel(object sender, EventArgs e)
+        {
+            // Evita el comportamiento predeterminado
+            if (e is GridViewEditEventArgs editArgs)
+                editArgs.Cancel = true;
+            if (e is GridViewDeleteEventArgs deleteArgs)
+                deleteArgs.Cancel = true;
         }
 
         private async Task LoadAuthorForEdit(int authorId)
@@ -155,7 +164,7 @@ namespace Frontend.Pages
                     {
                         ShowMessage(author.Id == 0 ? "Autor creado correctamente" : "Autor actualizado correctamente", "success");
                         HideModal();
-                        LoadAuthors();
+                        await LoadAuthors();
                     }
                     else
                     {

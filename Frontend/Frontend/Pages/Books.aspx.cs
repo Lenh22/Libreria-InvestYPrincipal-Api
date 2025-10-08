@@ -104,19 +104,19 @@ namespace Frontend.Pages
 
         protected void gvLibros_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            int bookId = Convert.ToInt32(e.CommandArgument);
+
             if (e.CommandName == "Edit")
             {
-                int bookId = Convert.ToInt32(e.CommandArgument);
-                LoadBookForEdit(bookId);
+                RegisterAsyncTask(new PageAsyncTask(async () => await LoadBookForEdit(bookId)));
             }
             else if (e.CommandName == "Delete")
             {
-                int bookId = Convert.ToInt32(e.CommandArgument);
-                DeleteBook(bookId);
+                RegisterAsyncTask(new PageAsyncTask(async () => await DeleteBook(bookId)));
             }
         }
 
-        private async void LoadBookForEdit(int bookId)
+        private async Task LoadBookForEdit(int bookId)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace Frontend.Pages
             }
         }
 
-        private async void DeleteBook(int bookId)
+        private async Task DeleteBook(int bookId)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Frontend.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     ShowMessage("Libro eliminado correctamente", "success");
-                    LoadBooks();
+                    await LoadBooks();
                 }
                 else
                 {
@@ -166,6 +166,14 @@ namespace Frontend.Pages
             {
                 ShowMessage($"Error al eliminar libro: {ex.Message}", "error");
             }
+        }
+        protected void gvLibros_RowCancel(object sender, EventArgs e)
+        {
+            // Cancela el comportamiento predeterminado del GridView
+            if (e is GridViewEditEventArgs editArgs)
+                editArgs.Cancel = true;
+            if (e is GridViewDeleteEventArgs deleteArgs)
+                deleteArgs.Cancel = true;
         }
 
         private async void UcBookSearch_SearchRequested(object sender, EventArgs e)

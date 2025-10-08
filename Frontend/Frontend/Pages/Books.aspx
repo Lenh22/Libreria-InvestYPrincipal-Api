@@ -4,9 +4,6 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Book Management</title>
-     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <script type="text/javascript">
@@ -109,10 +106,15 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <asp:GridView ID="gvLibros" runat="server" AutoGenerateColumns="false" 
+                            <asp:GridView ID="gvLibros" runat="server" 
+                                AutoGenerateColumns="false" 
                                 CssClass="table table-hover mb-0"
-                                OnRowCommand="gvLibros_RowCommand" DataKeyNames="Id"
-                                OnRowDataBound="gvLibros_RowDataBound">
+                                OnRowCommand="gvLibros_RowCommand" 
+                                OnRowEditing="gvLibros_RowCancel"
+                                OnRowDeleting="gvLibros_RowCancel"
+                                OnRowDataBound="gvLibros_RowDataBound"
+                                DataKeyNames="Id"
+                                >
                                 <Columns>
                                     <asp:BoundField DataField="Id" HeaderText="ID" ItemStyle-CssClass="fw-bold text-primary" />
                                     <asp:BoundField DataField="Title" HeaderText="Title" ItemStyle-CssClass="fw-semibold" />
@@ -187,4 +189,7 @@
             </div>
         </div>
     </div>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </asp:Content>

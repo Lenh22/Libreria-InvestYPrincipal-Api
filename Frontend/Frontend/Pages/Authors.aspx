@@ -73,9 +73,14 @@
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
-                            <asp:GridView ID="gvAutores" runat="server" AutoGenerateColumns="false" 
+                            <asp:GridView ID="gvAutores" runat="server" 
+                                AutoGenerateColumns="false" 
+                                AutoGenerateEditButton="false"
                                 CssClass="table table-hover mb-0"
-                                OnRowCommand="gvAutores_RowCommand" DataKeyNames="Id">
+                                OnRowCommand="gvAutores_RowCommand" 
+                                OnRowEditing="gvAutores_RowCancel"
+                                OnRowDeleting="gvAutores_RowCancel"
+                                DataKeyNames="Id">
                                 <Columns>
                                     <asp:BoundField DataField="Id" HeaderText="ID" ItemStyle-CssClass="fw-bold text-primary" />
                                     <asp:BoundField DataField="Name" HeaderText="Name" ItemStyle-CssClass="fw-semibold" />
@@ -87,7 +92,8 @@
                                             <div class="btn-group" role="group">
                                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" 
                                                     CssClass="btn btn-sm btn-warning me-1" 
-                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>'
+                                                    CommandName="Edit" 
+                                                    CommandArgument='<%# Eval("Id") %>'
                                                     CausesValidation="false"/>
                                                 <asp:Button ID="btnDelete" runat="server" Text="Delete" 
                                                     CssClass="btn btn-sm btn-danger" 
