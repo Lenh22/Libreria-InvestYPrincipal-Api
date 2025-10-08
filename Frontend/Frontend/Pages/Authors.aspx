@@ -132,17 +132,26 @@
                         <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
                             ErrorMessage="El nombre es obligatorio" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
-                    <%--Ver error de validacion--%>
-<%--                    <div class="mb-3">
+                    <div class="mb-3">
                         <label for="<%= txtBirthDate.ClientID %>" class="form-label">Fecha de Nacimiento *</label>
                         <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvBirthDate" runat="server" ControlToValidate="txtBirthDate" 
-                            ErrorMessage="La fecha de nacimiento es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                        <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate"
-                            Type="Date" Operator="LessThanEqual"
-                            ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic">
-                        </asp:CompareValidator>
-                    </div>--%>
+                        <asp:RequiredFieldValidator 
+                            ID="rfvBirthDate" 
+                            runat="server" 
+                            ControlToValidate="txtBirthDate"
+                            ErrorMessage="La fecha de nacimiento es obligatoria" 
+                            CssClass="text-danger" 
+                            Display="Dynamic" />
+                        <asp:CompareValidator 
+                            ID="cvBirthDate" 
+                            runat="server" 
+                            ControlToValidate="txtBirthDate"
+                            Operator="LessThanEqual" 
+                            Type="Date" 
+                            ErrorMessage="La fecha no puede ser futura"
+                            CssClass="text-danger" 
+                            Display="Dynamic" />
+                    </div>
                     <div class="mb-3">
                         <label for="<%= txtNationality.ClientID %>" class="form-label">Nacionalidad *</label>
                         <asp:TextBox ID="txtNationality" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>

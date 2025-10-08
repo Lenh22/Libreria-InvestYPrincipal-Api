@@ -21,8 +21,7 @@ namespace Frontend.Pages
         {
             if (!IsPostBack)
             {
-                //cvBirthDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
-                //_ = LoadAuthors(); 
+                cvBirthDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
             }
         }
 
@@ -92,7 +91,7 @@ namespace Frontend.Pages
 
                     hdnAuthorId.Value = author.Id.ToString();
                     txtName.Text = author.Name;
-                    //txtBirthDate.Text = author.BirthDate.ToString("yyyy-MM-dd");
+                    txtBirthDate.Text = author.BirthDate.ToString("yyyy-MM-dd");
                     txtNationality.Text = author.Nationality;
 
                     ShowModal();
@@ -135,7 +134,7 @@ namespace Frontend.Pages
                     {
                         Id = string.IsNullOrEmpty(hdnAuthorId.Value) ? 0 : Convert.ToInt32(hdnAuthorId.Value),
                         Name = txtName.Text.Trim(),
-                        //BirthDate = Convert.ToDateTime(txtBirthDate.Text),
+                        BirthDate = Convert.ToDateTime(txtBirthDate.Text),
                         Nationality = txtNationality.Text.Trim()
                     };
 
@@ -179,7 +178,7 @@ namespace Frontend.Pages
         {
             hdnAuthorId.Value = "0";
             txtName.Text = string.Empty;
-            //txtBirthDate.Text = string.Empty;
+            txtBirthDate.Text = string.Empty;
             txtNationality.Text = string.Empty;
         }
 
