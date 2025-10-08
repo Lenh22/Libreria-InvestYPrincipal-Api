@@ -2,6 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Author Management</title>
+
     <script type="text/javascript">
         function showAuthorModal() {
             var modal = new bootstrap.Modal(document.getElementById('authorModal'));
@@ -21,13 +22,13 @@
                 message +
                 '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
                 '</div>';
-            
+
             var container = document.querySelector('.container-fluid');
             if (container) {
                 container.insertAdjacentHTML('afterbegin', alertHtml);
-                
+
                 // Auto-hide after 5 seconds
-                setTimeout(function() {
+                setTimeout(function () {
                     var alert = container.querySelector('.alert');
                     if (alert) {
                         var bsAlert = new bootstrap.Alert(alert);
@@ -40,6 +41,7 @@
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
     <div class="container-fluid">
         <!-- Header Section -->
         <div class="row mb-4">
@@ -53,13 +55,13 @@
                     </div>
                     <div>
                         <asp:Button ID="btnNewAuthor" runat="server" Text="New Author" 
-                            CssClass="btn btn-primary btn-lg shadow" OnClick="btnNewAuthor_Click" />
+                            CssClass="btn btn-primary btn-lg shadow" OnClick="btnNewAuthor_Click" CausesValidation="false" />
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Authors Grid Section -->
+
+            <!-- Authors Grid Section -->
         <div class="row">
             <div class="col-12">
                 <div class="card shadow-sm">
@@ -81,14 +83,17 @@
                                     <asp:BoundField DataField="Nationality" HeaderText="Nationality" ItemStyle-CssClass="text-muted" />
                                     <asp:TemplateField HeaderText="Actions" ItemStyle-Width="150">
                                         <ItemTemplate>
+                                            <%--Ver error de asincrono--%>
                                             <div class="btn-group" role="group">
                                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" 
                                                     CssClass="btn btn-sm btn-warning me-1" 
-                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>' />
+                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>'
+                                                    CausesValidation="false"/>
                                                 <asp:Button ID="btnDelete" runat="server" Text="Delete" 
                                                     CssClass="btn btn-sm btn-danger" 
                                                     CommandName="Delete" CommandArgument='<%# Eval("Id") %>' 
-                                                    OnClientClick="return confirm('Are you sure you want to delete this author?');" />
+                                                    OnClientClick="return confirm('Are you sure you want to delete this author?');" 
+                                                    CausesValidation="false"/>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -108,61 +113,53 @@
                 </div>
             </div>
         </div>
-                
-        <!-- Author Form Modal -->
-        <div id="authorModal" runat="server" ClientIDMode="Static" class="modal fade" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header bg-gradient-primary text-white">
-                        <h5 class="modal-title" id="authorModalLabel">
-                            <i class="fas fa-user-edit me-2"></i>Author Form
-                        </h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                            <div class="modal-body">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <asp:HiddenField ID="hdnAuthorId" runat="server" />
-                                        
-                                        <div class="mb-3">
-                                            <label for="<%= txtName.ClientID %>" class="form-label">Nombre *</label>
-                                            <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
-                                                ErrorMessage="El nombre es obligatorio" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                            <label for="<%= txtBirthDate.ClientID %>" class="form-label">Fecha de Nacimiento *</label>
-                                            <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="rfvBirthDate" runat="server" ControlToValidate="txtBirthDate" 
-                                                ErrorMessage="La fecha de nacimiento es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                                            <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate"
-                                                Type="Date" Operator="LessThanEqual"
-                                                ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic">
-                                            </asp:CompareValidator>
 
-                                        </div>
-                                        
-                                        <div class="mb-3">
-                                            <label for="<%= txtNationality.ClientID %>" class="form-label">Nacionalidad *</label>
-                                            <asp:TextBox ID="txtNationality" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
-                                            <asp:RequiredFieldValidator ID="rfvNationality" runat="server" ControlToValidate="txtNationality" 
-                                                ErrorMessage="La nacionalidad es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
-                                        </div>
-                                        
-                                        <div class="row">
-                                            <div class="col-12">
-                                                <asp:Button ID="btnSave" runat="server" Text="Guardar" CssClass="btn btn-success me-2" OnClick="btnSave_Click" />
-                                                <asp:Button ID="btnCancel" runat="server" Text="Cancelar" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Modal Author -->
+    <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="helloModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+             <div class="modal-content">
+                <div class="modal-header bg-gradient-primary text-white">
+                    <h5 class="modal-title" id="authorModalLabel">
+                            <i class="fas fa-user-edit me-2"></i>Author Form
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <asp:HiddenField ID="hdnAuthorId" runat="server" />
+                    <div class="mb-3">
+                        <label for="<%= txtName.ClientID %>" class="form-label">Nombre *</label>
+                        <asp:TextBox ID="txtName" runat="server" CssClass="form-control" MaxLength="100"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvName" runat="server" ControlToValidate="txtName" 
+                            ErrorMessage="El nombre es obligatorio" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
+                    </div>
+                    <%--Ver error de validacion--%>
+<%--                    <div class="mb-3">
+                        <label for="<%= txtBirthDate.ClientID %>" class="form-label">Fecha de Nacimiento *</label>
+                        <asp:TextBox ID="txtBirthDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvBirthDate" runat="server" ControlToValidate="txtBirthDate" 
+                            ErrorMessage="La fecha de nacimiento es obligatoria" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
+                        <asp:CompareValidator ID="cvBirthDate" runat="server" ControlToValidate="txtBirthDate"
+                            Type="Date" Operator="LessThanEqual"
+                            ErrorMessage="La fecha no puede ser futura" CssClass="text-danger" Display="Dynamic">
+                        </asp:CompareValidator>
+                    </div>--%>
+                    <div class="mb-3">
+                        <label for="<%= txtNationality.ClientID %>" class="form-label">Nacionalidad *</label>
+                        <asp:TextBox ID="txtNationality" runat="server" CssClass="form-control" MaxLength="50"></asp:TextBox>
+                        <asp:RequiredFieldValidator ID="rfvNationality" runat="server" ControlToValidate="txtNationality" 
+                            ErrorMessage="La nacionalidad es obligatoria" CssClass="text-danger" ></asp:RequiredFieldValidator>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div class="col-12">
+                        <asp:Button ID="Button1" runat="server" Text="Guardar" CssClass="btn btn-success me-2" OnClick="btnSave_Click" />
+                        <asp:Button ID="Button2" runat="server" Text="Cancelar" data-bs-dismiss="modal" CssClass="btn btn-secondary" OnClick="btnCancel_Click" CausesValidation="false"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <%--Ver por que con tenerlo en Master Page no es suficiente--%>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </asp:Content>

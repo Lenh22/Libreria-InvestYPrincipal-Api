@@ -4,6 +4,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <title>Book Management</title>
+     <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
     <script type="text/javascript">
         function showBookModal() {
             var modal = new bootstrap.Modal(document.getElementById('bookModal'));
@@ -70,7 +75,7 @@
                     </div>
                     <div>
                         <asp:Button ID="btnNewBook" runat="server" Text="New Book" 
-                            CssClass="btn btn-primary btn-lg shadow" OnClick="btnNewBook_Click" />
+                            CssClass="btn btn-primary btn-lg shadow" OnClick="btnNewBook_Click" CausesValidation="false" />
                     </div>
                 </div>
             </div>
@@ -136,11 +141,13 @@
                                             <div class="btn-group" role="group">
                                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" 
                                                     CssClass="btn btn-sm btn-warning me-1" 
-                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>' />
+                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>' CausesValidation="false" />
                                                 <asp:Button ID="btnDelete" runat="server" Text="Delete" 
                                                     CssClass="btn btn-sm btn-danger" 
-                                                    CommandName="Delete" CommandArgument='<%# Eval("Id") %>' 
-                                                    OnClientClick="return confirm('Are you sure you want to delete this book?');" />
+                                                    CommandName="Delete" 
+                                                    CommandArgument='<%# Eval("Id") %>' 
+                                                    OnClientClick="return confirm('Are you sure you want to delete this book?');"
+                                                    CausesValidation="false"/>
                                             </div>
                                         </ItemTemplate>
                                     </asp:TemplateField>
@@ -151,7 +158,7 @@
                                         <h5 class="text-muted">No books registered</h5>
                                         <p class="text-muted">Start by adding your first book to the catalog</p>
                                         <asp:Button ID="btnAddFirstBook" runat="server" Text="Add First Book" 
-                                            CssClass="btn btn-primary" OnClick="btnNewBook_Click" />
+                                            CssClass="btn btn-primary" OnClick="btnNewBook_Click" CausesValidation="false" />
                                     </div>
                                 </EmptyDataTemplate>
                             </asp:GridView>

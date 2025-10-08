@@ -24,6 +24,15 @@ namespace Frontend.Pages
         protected global::System.Web.UI.WebControls.Button btnNewBook;
 
         /// <summary>
+        /// Control ucBookSearch.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::Frontend.UserControls.BookSearch ucBookSearch;
+
+        /// <summary>
         /// Control gvLibros.
         /// </summary>
         /// <remarks>
@@ -32,8 +41,13 @@ namespace Frontend.Pages
         /// </remarks>
         protected global::System.Web.UI.WebControls.GridView gvLibros;
 
-        protected global::Frontend.UserControls.BookSearch ucBookSearch;
+        /// <summary>
+        /// Control ucBookForm.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
         protected global::Frontend.UserControls.BookForm ucBookForm;
-
     }
 }

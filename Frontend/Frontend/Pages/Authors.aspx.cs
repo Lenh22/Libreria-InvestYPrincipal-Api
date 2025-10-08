@@ -21,9 +21,11 @@ namespace Frontend.Pages
         {
             if (!IsPostBack)
             {
-                cvBirthDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
+                //cvBirthDate.ValueToCompare = DateTime.Now.ToString("yyyy-MM-dd");
+                //_ = LoadAuthors(); 
             }
         }
+
 
         protected async void Page_PreRender(object sender, EventArgs e)
         {
@@ -44,7 +46,7 @@ namespace Frontend.Pages
                     var authors = JsonConvert.DeserializeObject<List<AuthorDto>>(json);
                     gvAutores.DataSource = authors;
                     gvAutores.DataBind();
-                    
+
                     // Actualizar contador de autores
                     int authorCount = authors?.Count ?? 0;
                     string script = $"document.getElementById('authorCount').textContent = '{authorCount} authors';";
@@ -64,21 +66,21 @@ namespace Frontend.Pages
             ShowModal();
         }
 
-        protected void gvAutores_RowCommand(object sender, GridViewCommandEventArgs e)
+        protected async void gvAutores_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             if (e.CommandName == "Edit")
             {
                 int authorId = Convert.ToInt32(e.CommandArgument);
-                LoadAuthorForEdit(authorId);
+                await LoadAuthorForEdit(authorId);
             }
             else if (e.CommandName == "Delete")
             {
                 int authorId = Convert.ToInt32(e.CommandArgument);
-                DeleteAuthor(authorId);
+                await DeleteAuthor(authorId);
             }
         }
 
-        private async void LoadAuthorForEdit(int authorId)
+        private async Task LoadAuthorForEdit(int authorId)
         {
             try
             {
@@ -87,12 +89,12 @@ namespace Frontend.Pages
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var author = JsonConvert.DeserializeObject<AuthorDto>(json);
-                    
+
                     hdnAuthorId.Value = author.Id.ToString();
                     txtName.Text = author.Name;
-                    txtBirthDate.Text = author.BirthDate.ToString("yyyy-MM-dd");
+                    //txtBirthDate.Text = author.BirthDate.ToString("yyyy-MM-dd");
                     txtNationality.Text = author.Nationality;
-                    
+
                     ShowModal();
                 }
             }
@@ -102,7 +104,7 @@ namespace Frontend.Pages
             }
         }
 
-        private async void DeleteAuthor(int authorId)
+        private async Task DeleteAuthor(int authorId)
         {
             try
             {
@@ -110,7 +112,7 @@ namespace Frontend.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     ShowMessage("Autor eliminado correctamente", "success");
-                    LoadAuthors();
+                    await LoadAuthors();
                 }
                 else
                 {
@@ -133,7 +135,7 @@ namespace Frontend.Pages
                     {
                         Id = string.IsNullOrEmpty(hdnAuthorId.Value) ? 0 : Convert.ToInt32(hdnAuthorId.Value),
                         Name = txtName.Text.Trim(),
-                        BirthDate = Convert.ToDateTime(txtBirthDate.Text),
+                        //BirthDate = Convert.ToDateTime(txtBirthDate.Text),
                         Nationality = txtNationality.Text.Trim()
                     };
 
@@ -177,28 +179,29 @@ namespace Frontend.Pages
         {
             hdnAuthorId.Value = "0";
             txtName.Text = string.Empty;
-            txtBirthDate.Text = string.Empty;
+            //txtBirthDate.Text = string.Empty;
             txtNationality.Text = string.Empty;
         }
 
         private void ShowModal()
         {
-            string script = "var myModal = new bootstrap.Modal(document.getElementById('authorModal')); myModal.show();";
-            ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowModal", script, true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowAuthorModal", "showAuthorModal();", true);
         }
 
         private void HideModal()
         {
-            string script = "var myModal = bootstrap.Modal.getInstance(document.getElementById('authorModal')); if (myModal) myModal.hide();";
-            ScriptManager.RegisterStartupScript(this, GetType(), "HideModal", script, true);
+            ScriptManager.RegisterStartupScript(this, GetType(), "HideModal", "hideAuthorModal();", true);
         }
-
 
         private void ShowMessage(string message, string type)
         {
             string script = $"showMessage('{message}', '{type}');";
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
         }
-
+        protected void btnShowModal_Click(object sender, EventArgs e)
+        {
+            // Llama al JavaScript para mostrar el modal
+            ScriptManager.RegisterStartupScript(this, GetType(), "ShowAuthorModal", "showAuthorModal();", true);
+        }
     }
 }
