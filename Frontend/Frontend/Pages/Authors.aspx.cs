@@ -183,13 +183,16 @@ namespace Frontend.Pages
 
         private void ShowModal()
         {
-            ScriptManager.RegisterStartupScript(this, GetType(), "ShowModal", "showAuthorModal();", true);
+            string script = "var myModal = new bootstrap.Modal(document.getElementById('authorModal')); myModal.show();";
+            ScriptManager.RegisterStartupScript(this, this.GetType(), "ShowModal", script, true);
         }
 
         private void HideModal()
         {
-            ScriptManager.RegisterStartupScript(this, GetType(), "HideModal", "hideAuthorModal();", true);
+            string script = "var myModal = bootstrap.Modal.getInstance(document.getElementById('authorModal')); if (myModal) myModal.hide();";
+            ScriptManager.RegisterStartupScript(this, GetType(), "HideModal", script, true);
         }
+
 
         private void ShowMessage(string message, string type)
         {

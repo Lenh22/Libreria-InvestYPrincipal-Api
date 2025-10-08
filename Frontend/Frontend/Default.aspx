@@ -15,12 +15,12 @@
                         Manage your book catalog and authors with ease using our intuitive interface.
                     </p>
                     <div class="d-flex gap-3">
-                        <a href="~/Pages/Books" class="btn btn-light btn-lg">
+                        <asp:HyperLink ID="hlBooks" runat="server" NavigateUrl="~/Pages/Books.aspx" CssClass="btn btn-light btn-lg">
                             <i class="fas fa-book me-2"></i>Manage Books
-                        </a>
-                        <a href="~/Pages/Authors" class="btn btn-outline-light btn-lg">
+                        </asp:HyperLink>
+                        <asp:HyperLink ID="hlAuthors" runat="server" NavigateUrl="~/Pages/Authors.aspx" CssClass="btn btn-outline-light btn-lg">
                             <i class="fas fa-user-edit me-2"></i>Manage Authors
-                        </a>
+                        </asp:HyperLink>
                     </div>
                 </div>
                 <div class="col-lg-4 text-center">
@@ -333,15 +333,16 @@
                         <h3 class="mb-4">Ready to Get Started?</h3>
                         <p class="lead mb-4">Start managing your library today with our intuitive and powerful system.</p>
                         <div class="d-flex justify-content-center gap-3">
-                            <a href="~/Pages/Books" class="btn btn-light btn-lg">
+                            <asp:HyperLink runat="server" NavigateUrl="~/Pages/Books.aspx" CssClass="btn btn-light btn-lg">
                                 <i class="fas fa-book me-2"></i>Manage Books
-                            </a>
-                            <a href="~/Pages/Authors" class="btn btn-outline-light btn-lg">
+                            </asp:HyperLink>
+
+                            <asp:HyperLink runat="server" NavigateUrl="~/Pages/Authors.aspx" CssClass="btn btn-outline-light btn-lg">
                                 <i class="fas fa-user-edit me-2"></i>Manage Authors
-                            </a>
-                            <a href="http://localhost:7000/swagger" target="_blank" class="btn btn-outline-light btn-lg">
+                            </asp:HyperLink>
+                            <asp:HyperLink ID="hlSwagger" runat="server" NavigateUrl="http://localhost:7000/swagger" target="_blank" CssClass="btn btn-outline-light btn-lg">
                                 <i class="fas fa-code me-2"></i>API Docs
-                            </a>
+                            </asp:HyperLink>
                         </div>
                     </div>
                 </div>

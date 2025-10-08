@@ -110,7 +110,7 @@
         </div>
                 
         <!-- Author Form Modal -->
-        <div class="modal fade" id="authorModal" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
+        <div id="authorModal" runat="server" ClientIDMode="Static" class="modal fade" tabindex="-1" aria-labelledby="authorModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-gradient-primary text-white">
