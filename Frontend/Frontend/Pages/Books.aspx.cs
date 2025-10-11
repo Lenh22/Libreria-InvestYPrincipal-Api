@@ -35,24 +35,24 @@ namespace Frontend.Pages
         }
 
         private bool _eventsSetup = false;
-        
+
         private void SetupEventHandlers()
         {
             if (_eventsSetup) return; // Evitar suscripciones duplicadas
-            
+
             if (ucBookSearch != null)
             {
                 ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
-                ucBookSearch.ClearRequested += UcBookSearch_ClearRequested;
-                ucBookSearch.BookSelected += UcBookSearch_BookSelected;
+                ucBookSearch.ClearRequested += UcBookSearch_ClearRequested; 
+                ucBookSearch.BookSelected += UcBookSearch_BookSelected;     
             }
-            
+
             if (ucBookForm != null)
             {
                 ucBookForm.SaveRequested += UcBookForm_SaveRequested;
                 ucBookForm.CancelRequested += UcBookForm_CancelRequested;
             }
-            
+
             _eventsSetup = true;
         }
 
@@ -84,7 +84,7 @@ namespace Frontend.Pages
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var authors = JsonConvert.DeserializeObject<List<AuthorDto>>(json);
-                    
+
                     // Cargar autores en el UserControl
                     ucBookForm.LoadAuthors(authors);
                 }
@@ -125,7 +125,7 @@ namespace Frontend.Pages
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var book = JsonConvert.DeserializeObject<BookDto>(json);
-                    
+
                     ucBookForm.BookId = book.Id;
                     ucBookForm.Title = book.Title;
                     ucBookForm.Genre = book.Genre;
@@ -136,7 +136,7 @@ namespace Frontend.Pages
                     ucBookForm.Price = book.Price;
                     ucBookForm.Language = book.Language;
                     ucBookForm.AuthorId = book.AuthorId;
-                    
+
                     ucBookForm.SetFormTitle("Editar Libro");
                     ShowModal();
                 }
@@ -167,6 +167,7 @@ namespace Frontend.Pages
                 ShowMessage($"Error al eliminar libro: {ex.Message}", "error");
             }
         }
+
         protected void gvLibros_RowCancel(object sender, EventArgs e)
         {
             // Cancela el comportamiento predeterminado del GridView
@@ -182,13 +183,13 @@ namespace Frontend.Pages
             {
                 var searchControl = (UserControls.BookSearch)sender;
                 var url = $"{API_BASE_URL}/books/search?title={searchControl.Title}&genre={searchControl.Genre}&authorName={searchControl.AuthorName}";
-                
+
                 var response = await httpClient.GetAsync(url);
                 if (response.IsSuccessStatusCode)
                 {
                     var json = await response.Content.ReadAsStringAsync();
                     var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
-                    
+
                     // Mostrar resultados en el GridView del UserControl
                     searchControl.SearchResults = books;
                 }
@@ -205,14 +206,15 @@ namespace Frontend.Pages
 
         private void UcBookSearch_ClearRequested(object sender, EventArgs e)
         {
+            // Limpiar búsqueda y recargar libros (sincrónico)
             ucBookSearch.ClearSearchResults();
-            LoadBooks();
+            LoadBooks().Wait(); // Espera el resultado sincrónicamente
         }
 
         private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e)
         {
-            // Cargar el libro seleccionado en el formulario para edición
-            LoadBookForEdit(e.SelectedBook.Id);
+            // Cargar el libro seleccionado en el formulario para edición (sincrónico)
+            LoadBookForEdit(e.SelectedBook.Id).Wait();
         }
 
         private async void UcBookForm_SaveRequested(object sender, EventArgs e)
@@ -250,7 +252,7 @@ namespace Frontend.Pages
                 {
                     ShowMessage(book.Id == 0 ? "Libro creado correctamente" : "Libro actualizado correctamente", "success");
                     HideModal();
-                    LoadBooks();
+                    await LoadBooks();
                 }
                 else
                 {

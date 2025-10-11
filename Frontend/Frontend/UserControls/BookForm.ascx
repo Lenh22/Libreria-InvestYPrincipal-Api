@@ -130,7 +130,8 @@
         <div class="row">
             <div class="col-12">
                 <asp:Button ID="btnSave" runat="server" Text="Save" CssClass="btn btn-success me-2" OnClick="btnSave_Click" />
-                <asp:Button ID="btnCancel" runat="server" Text="Cancel" CssClass="btn btn-secondary" OnClick="btnCancel_Click" />
+                <asp:Button ID="btnCancel" runat="server" Text="Cancel" data-bs-dismiss="modal" CssClass="btn btn-secondary" OnClick="btnCancel_Click" CausesValidation="false"/>
+
             </div>
         </div>
     </div>

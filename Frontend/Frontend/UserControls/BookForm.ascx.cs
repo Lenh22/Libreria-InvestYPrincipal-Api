@@ -74,7 +74,7 @@ namespace Frontend.UserControls
             set { txtISBN.Text = value; }
         }
 
-        public decimal Price
+        public decimal Price //Verificar que obtenga bien el dato
         {
             get
             {
