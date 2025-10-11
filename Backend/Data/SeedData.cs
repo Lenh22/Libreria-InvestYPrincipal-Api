@@ -47,61 +47,61 @@ namespace Libreria_InvestYPrincipal_Api.Data
                 new Book
                 {
                     Title = "Cien años de soledad",
-                    Genre = "Ficción",
+                    Genre = "Fiction",
                     PublishDate = new DateTime(1967, 6, 5),
                     Pages = 471,
                     Publisher = "Editorial Sudamericana",
                     ISBN = "978-84-376-0494-7",
                     Price = 25.99m,
-                    Language = "Español",
+                    Language = "Spanish",
                     AuthorId = authors[0].Id
                 },
                 new Book
                 {
                     Title = "El amor en los tiempos del cólera",
-                    Genre = "Ficción",
+                    Genre = "Fiction",
                     PublishDate = new DateTime(1985, 1, 1),
                     Pages = 368,
                     Publisher = "Editorial Oveja Negra",
                     ISBN = "978-84-376-0495-4",
                     Price = 22.50m,
-                    Language = "Español",
+                    Language = "Spanish",
                     AuthorId = authors[0].Id
                 },
                 new Book
                 {
                     Title = "La ciudad y los perros",
-                    Genre = "Ficción",
+                    Genre = "Fiction",
                     PublishDate = new DateTime(1963, 1, 1),
                     Pages = 320,
                     Publisher = "Editorial Seix Barral",
                     ISBN = "978-84-322-0496-1",
                     Price = 20.99m,
-                    Language = "Español",
+                    Language = "Spanish",
                     AuthorId = authors[1].Id
                 },
                 new Book
                 {
                     Title = "Ficciones",
-                    Genre = "Ficción",
+                    Genre = "Fiction",
                     PublishDate = new DateTime(1944, 1, 1),
                     Pages = 200,
                     Publisher = "Editorial Sur",
                     ISBN = "978-84-376-0497-8",
                     Price = 18.75m,
-                    Language = "Español",
+                    Language = "Spanish",
                     AuthorId = authors[2].Id
                 },
                 new Book
                 {
                     Title = "La casa de los espíritus",
-                    Genre = "Ficción",
+                    Genre = "Fiction",
                     PublishDate = new DateTime(1982, 1, 1),
                     Pages = 432,
                     Publisher = "Editorial Plaza & Janés",
                     ISBN = "978-84-376-0498-5",
                     Price = 24.99m,
-                    Language = "Español",
+                    Language = "Spanish",
                     AuthorId = authors[3].Id
                 }
             };
