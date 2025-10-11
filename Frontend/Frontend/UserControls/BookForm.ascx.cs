@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Frontend.Dto;
+using System.Globalization;
 
 namespace Frontend.UserControls
 {
@@ -74,14 +75,15 @@ namespace Frontend.UserControls
             set { txtISBN.Text = value; }
         }
 
-        public decimal Price //Verificar que obtenga bien el dato
+        public decimal Price
         {
             get
             {
-                decimal.TryParse(txtPrice.Text, out decimal price);
-                return price;
+                if (decimal.TryParse(txtPrice.Text, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price))
+                    return price;
+                return 0;
             }
-            set { txtPrice.Text = value.ToString("F2"); }
+            set { txtPrice.Text = value.ToString("F2", CultureInfo.InvariantCulture); }
         }
 
         public string Language
