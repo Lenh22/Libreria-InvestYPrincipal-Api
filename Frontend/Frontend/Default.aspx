@@ -8,7 +8,7 @@
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <h1 class="display-4 fw-bold mb-4 text-white">
-                        <i class="fas fa-book-open me-3"></i>InvestYPrincipal Library
+                        <i class="fas fa-book-open me-3"></i>TP Library
                     </h1>
                     <p class="lead mb-4 text-white">
                         A modern and efficient library management system built with ASP.NET Web Forms (.NET Framework 4.7.2) and .NET Core 8.0 API. 

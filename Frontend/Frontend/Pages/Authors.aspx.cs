@@ -48,8 +48,7 @@ namespace Frontend.Pages
 
                     // Actualizar contador de autores
                     int authorCount = authors?.Count ?? 0;
-                    string script = $"document.getElementById('authorCount').textContent = '{authorCount} authors';";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "UpdateAuthorCount", script, true);
+                    ltAuthorCount.Text = $"{authorCount} books";
                 }
             }
             catch (Exception ex)

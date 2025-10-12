@@ -102,7 +102,7 @@
                         <h5 class="mb-0">
                             <i class="fas fa-list me-2"></i>Book List
                         </h5>
-                        <span class="badge bg-light text-dark" id="bookCount">0 books</span>
+                        <asp:Label ID="ltBookCount" runat="server" Text="0 books" CssClass="badge bg-light text-dark"></asp:Label>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">

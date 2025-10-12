@@ -34,8 +34,9 @@ namespace Frontend.Pages
         {
             if (!IsPostBack)
             {
-                await LoadBooks();
+                //await LoadBooks();
                 await LoadAuthors();
+                await LoadBooks();
             }
         }
 
@@ -73,10 +74,9 @@ namespace Frontend.Pages
                     gvLibros.DataSource = books;
                     gvLibros.DataBind();
 
+                    // Actualizar contador de libros
                     int booksCount = books?.Count ?? 0;
-                    string script = $"document.getElementById('bookCount').textContent = '{booksCount} authors';";
-                    ScriptManager.RegisterStartupScript(this, GetType(), "UpdateBookCount", script, true);
-
+                    ltBookCount.Text = $"{booksCount} books";
                 }
             }
             catch (Exception ex)
@@ -294,17 +294,6 @@ namespace Frontend.Pages
         {
             string script = $"showMessage('{message}', '{type}');";
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
-        }
-
-        protected void gvLibros_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow)
-            {
-                // Actualizar contador de libros
-                int bookCount = gvLibros.Rows.Count;
-                string script = $"document.getElementById('bookCount').textContent = '{bookCount} books';";
-                ScriptManager.RegisterStartupScript(this, GetType(), "UpdateBookCount", script, true);
-            }
         }
     }
 }

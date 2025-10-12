@@ -69,7 +69,7 @@
                         <h5 class="mb-0">
                             <i class="fas fa-list me-2"></i>Author List
                         </h5>
-                        <span class="badge bg-light text-dark" id="authorCount">0 authors</span>
+                        <asp:Label ID="ltAuthorCount" runat="server" Text="0 authors"  CssClass="badge bg-light text-dark"></asp:Label>
                     </div>
                     <div class="card-body p-0">
                         <div class="table-responsive">
