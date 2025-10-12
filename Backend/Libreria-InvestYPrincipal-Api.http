@@ -44,7 +44,7 @@ GET http://localhost:7000/api/books/1
 Accept: application/json
 
 ### Search books
-GET http://localhost:7000/api/books/search?title=cien&genre=Ficción&authorName=García
+GET http://localhost:7000/api/books/search?title=cien&genre=Fiction&authorName=García
 Accept: application/json
 
 ### Create new book

@@ -3,6 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Libreria_InvestYPrincipal_Api.Models
 {
+    //Para la BD
     public class Author
     {
         public int Id { get; set; }

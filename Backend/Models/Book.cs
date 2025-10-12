@@ -5,6 +5,7 @@ namespace Libreria_InvestYPrincipal_Api.Models
 {
     public class Book
     {
+        //Parallel la BD
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El título es obligatorio")]

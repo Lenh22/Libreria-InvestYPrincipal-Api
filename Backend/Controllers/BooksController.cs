@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Libreria_InvestYPrincipal_Api.Dto;
 using Libreria_InvestYPrincipal_Api.Models;
 using Libreria_InvestYPrincipal_Api.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Libreria_InvestYPrincipal_Api.Controllers
 {
@@ -17,53 +18,124 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
 
         /// Obtiene todos los libros
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookDto>>> GetBooks()
         {
             var books = await _bookService.GetAllBooksAsync();
-            return Ok(books);
+            var bookDtos = books.Select(b => new BookDto
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Genre = b.Genre,
+                PublishDate = b.PublishDate,
+                Pages = b.Pages,
+                Publisher = b.Publisher,
+                ISBN = b.ISBN,
+                Price = b.Price,
+                Language = b.Language,
+                AuthorId = b.AuthorId,
+                AuthorName = b.Author != null ? b.Author.Name : string.Empty
+            });
+
+            return Ok(bookDtos);
         }
 
         /// Obtiene un libro por ID
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<ActionResult<BookDto>> GetBook(int id)
         {
             var book = await _bookService.GetBookByIdAsync(id);
             if (book == null)
             {
                 return NotFound();
             }
-            return Ok(book);
+            var bookDto = new BookDto
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Genre = book.Genre,
+                PublishDate = book.PublishDate,
+                Pages = book.Pages,
+                Publisher = book.Publisher,
+                ISBN = book.ISBN,
+                Price = book.Price,
+                Language = book.Language,
+                AuthorId = book.AuthorId,
+                AuthorName = book.Author != null ? book.Author.Name : string.Empty
+            };
+
+            return Ok(bookDto);
         }
 
         /// Busca libros con filtros opcionales
         [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<Book>>> SearchBooks(
+        public async Task<ActionResult<IEnumerable<BookDto>>> SearchBooks(
             [FromQuery] string? title, 
             [FromQuery] string? genre, 
             [FromQuery] string? authorName)
         {
             var books = await _bookService.SearchBooksAsync(title, genre, authorName);
-            return Ok(books);
+            var bookDtos = books.Select(b => new BookDto
+            {
+                Id = b.Id,
+                Title = b.Title,
+                Genre = b.Genre,
+                PublishDate = b.PublishDate,
+                Pages = b.Pages,
+                Publisher = b.Publisher,
+                ISBN = b.ISBN,
+                Price = b.Price,
+                Language = b.Language,
+                AuthorId = b.AuthorId,
+                AuthorName = b.Author != null ? b.Author.Name : string.Empty
+            });
+
+            return Ok(bookDtos);
         }
 
         /// Crea un nuevo libro
         [HttpPost]
-        public async Task<ActionResult<Book>> CreateBook(Book book)
+        public async Task<ActionResult<BookDto>> CreateBook(CreateBookDto bookDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            var book = new Book
+            {
+                Title = bookDto.Title,
+                Genre = bookDto.Genre,
+                PublishDate = bookDto.PublishDate,
+                Pages = bookDto.Pages,
+                Publisher = bookDto.Publisher,
+                ISBN = bookDto.ISBN,
+                Price = bookDto.Price,
+                Language = bookDto.Language,
+                AuthorId = bookDto.AuthorId
+            };
 
             var createdBook = await _bookService.CreateBookAsync(book);
-            return CreatedAtAction(nameof(GetBook), new { id = createdBook.Id }, createdBook);
+            var createdBookDto = new BookDto
+            {
+                Id = createdBook.Id,
+                Title = createdBook.Title,
+                Genre = createdBook.Genre,
+                PublishDate = createdBook.PublishDate,
+                Pages = createdBook.Pages,
+                Publisher = createdBook.Publisher,
+                ISBN = createdBook.ISBN,
+                Price = createdBook.Price,
+                Language = createdBook.Language,
+                AuthorId = createdBook.AuthorId,
+                AuthorName = createdBook.Author != null ? createdBook.Author.Name : string.Empty
+            };
+            return CreatedAtAction(nameof(GetBook), new { id = createdBookDto.Id }, createdBookDto);
         }
 
         /// Actualiza un libro existente
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateBook(int id, Book book)
+        public async Task<IActionResult> UpdateBook(int id, UpdateBookDto dto)
         {
-            if (id != book.Id)
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
@@ -73,6 +145,20 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
                 return BadRequest(ModelState);
             }
 
+            var book = new Book
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Genre = dto.Genre,
+                PublishDate = dto.PublishDate,
+                Pages = dto.Pages,
+                Publisher = dto.Publisher,
+                ISBN = dto.ISBN,
+                Price = dto.Price,
+                Language = dto.Language,
+                AuthorId = dto.AuthorId
+            };
+
             var updatedBook = await _bookService.UpdateBookAsync(id, book);
             if (updatedBook == null)
             {
@@ -81,7 +167,6 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
 
             return NoContent();
         }
-
         /// Elimina un libro
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
