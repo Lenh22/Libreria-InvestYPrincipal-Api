@@ -50,7 +50,7 @@ namespace Frontend.Pages
             {
                 ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
                 ucBookSearch.ClearRequested += UcBookSearch_ClearRequested; 
-                ucBookSearch.BookSelected += UcBookSearch_BookSelected;
+                //ucBookSearch.BookSelected += UcBookSearch_BookSelected; // Verificar funcionalidad
 
                 ucBookSearch.EditRequested += UcBookSearch_EditRequested;
                 ucBookSearch.DeleteRequested += UcBookSearch_DeleteRequested;
@@ -224,11 +224,11 @@ namespace Frontend.Pages
             LoadBooks().Wait(); // Espera sincronico
         }
 
-        private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e)
-        {
-            // Cargar el libro seleccionado en el formulario para edición (sincrónico)
-            LoadBookForEdit(e.SelectedBook.Id).Wait();
-        }
+        //private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e) /// Verificar funcionalidad
+        //{
+        //    // Cargar el libro seleccionado en el formulario para edición (sincrónico)
+        //    LoadBookForEdit(e.SelectedBook.Id).Wait();
+        //}
 
         private void UcBookSearch_EditRequested(object sender, int bookId)
         {
