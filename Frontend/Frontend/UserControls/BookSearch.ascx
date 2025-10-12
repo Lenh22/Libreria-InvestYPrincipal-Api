@@ -33,8 +33,21 @@
                     <asp:BoundField DataField="AuthorName" HeaderText="Author" />
                     <asp:TemplateField HeaderText="Actions">
                         <ItemTemplate>
-                            <asp:Button ID="btnSelect" runat="server" Text="Select" CssClass="btn btn-sm btn-info" 
-                                CommandName="Select" CommandArgument='<%# Eval("Id") %>' />
+                            <div class="btn-group" role="group">
+                                <asp:Button ID="btnSelect" runat="server" Text="Select" 
+                                    CssClass="btn btn-sm btn-info" 
+                                    CommandName="Select" CommandArgument='<%# Eval("Id") %>' CausesValidation="false" />
+                                                                              <asp:Button ID="btnEdit" runat="server" Text="Edit" 
+                                                    CssClass="btn btn-sm btn-warning me-1" 
+                                                    CommandName="Edit" CommandArgument='<%# Eval("Id") %>' CausesValidation="false" />
+                                                <asp:Button ID="btnDelete" runat="server" Text="Delete" 
+                                                    CssClass="btn btn-sm btn-danger" 
+                                                    CommandName="Delete" 
+                                                    CommandArgument='<%# Eval("Id") %>' 
+                                                    OnClientClick="return confirm('Are you sure you want to delete this book?');"
+                                                    CausesValidation="false"/>
+
+                            </div>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>

@@ -2,6 +2,7 @@ using System;
 
 namespace Frontend.Dto
 {
+    [Serializable]
     public class BookDto
     {
         public int Id { get; set; }

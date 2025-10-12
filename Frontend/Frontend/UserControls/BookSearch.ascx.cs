@@ -11,6 +11,8 @@ namespace Frontend.UserControls
         public event EventHandler SearchRequested;
         public event EventHandler ClearRequested;
         public event EventHandler<BookSelectedEventArgs> BookSelected;
+        public event EventHandler<int> EditRequested;
+        public event EventHandler<int> DeleteRequested;
 
         public string Title => txtTitle.Text.Trim();
         public string Genre => txtGenre.Text.Trim();
@@ -52,6 +54,16 @@ namespace Frontend.UserControls
                 {
                     BookSelected?.Invoke(this, new BookSelectedEventArgs(selectedBook));
                 }
+            }
+            else if (e.CommandName == "EditBook")
+            {
+                int bookId = Convert.ToInt32(e.CommandArgument);
+                EditRequested?.Invoke(this, bookId);
+            }
+            else if (e.CommandName == "DeleteBook")
+            {
+                int bookId = Convert.ToInt32(e.CommandArgument);
+                DeleteRequested?.Invoke(this, bookId);
             }
         }
 

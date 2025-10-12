@@ -50,7 +50,10 @@ namespace Frontend.Pages
             {
                 ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
                 ucBookSearch.ClearRequested += UcBookSearch_ClearRequested; 
-                ucBookSearch.BookSelected += UcBookSearch_BookSelected;     
+                ucBookSearch.BookSelected += UcBookSearch_BookSelected;
+
+                ucBookSearch.EditRequested += UcBookSearch_EditRequested;
+                ucBookSearch.DeleteRequested += UcBookSearch_DeleteRequested;
             }
 
             if (ucBookForm != null)
@@ -218,13 +221,23 @@ namespace Frontend.Pages
         {
             // Limpiar búsqueda y recargar libros (sincrónico)
             ucBookSearch.ClearSearchResults();
-            LoadBooks().Wait(); // Espera el resultado sincrónicamente
+            LoadBooks().Wait(); // Espera sincronico
         }
 
         private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e)
         {
             // Cargar el libro seleccionado en el formulario para edición (sincrónico)
             LoadBookForEdit(e.SelectedBook.Id).Wait();
+        }
+
+        private void UcBookSearch_EditRequested(object sender, int bookId)
+        {
+            RegisterAsyncTask(new PageAsyncTask(async () => await LoadBookForEdit(bookId)));
+        }
+
+        private void UcBookSearch_DeleteRequested(object sender, int bookId)
+        {
+            RegisterAsyncTask(new PageAsyncTask(async () => await DeleteBook(bookId)));
         }
 
         private async void UcBookForm_SaveRequested(object sender, EventArgs e)
