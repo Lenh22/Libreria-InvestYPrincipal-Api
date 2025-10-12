@@ -23,12 +23,17 @@ namespace Frontend.Pages
             // Page_Load vacío - la configuración se hace en Page_PreRender
         }
 
+        protected void Page_Init(object sender, EventArgs e)
+        {
+            // Configurar eventos aquí para asegurar que los UserControls estén disponibles
+            // Se hace antes del PostBack. Es para vincular eventos
+            SetupEventHandlers();
+        }
+
         protected async void Page_PreRender(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                // Configurar eventos aquí para asegurar que los UserControls estén disponibles
-                SetupEventHandlers();
                 await LoadBooks();
                 await LoadAuthors();
             }
@@ -67,6 +72,11 @@ namespace Frontend.Pages
                     var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
                     gvLibros.DataSource = books;
                     gvLibros.DataBind();
+
+                    int booksCount = books?.Count ?? 0;
+                    string script = $"document.getElementById('bookCount').textContent = '{booksCount} authors';";
+                    ScriptManager.RegisterStartupScript(this, GetType(), "UpdateBookCount", script, true);
+
                 }
             }
             catch (Exception ex)
