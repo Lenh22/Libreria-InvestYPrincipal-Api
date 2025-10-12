@@ -50,9 +50,15 @@ namespace Libreria_InvestYPrincipal_Api.Services
 
         public async Task<bool> DeleteAuthorAsync(int id)
         {
-            var author = await _context.Authors.FindAsync(id);
+            var author = await _context.Authors
+                .Include(a => a.Books)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
             if (author == null)
                 return false;
+
+            if (author.Books.Any())
+                throw new InvalidOperationException("No se puede eliminar un autor con libros asociados.");
 
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();

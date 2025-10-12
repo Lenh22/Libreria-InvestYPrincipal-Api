@@ -123,7 +123,23 @@ namespace Frontend.Pages
                 }
                 else
                 {
-                    ShowMessage("Error al eliminar el autor", "error");
+                    //Verificar:Podriamos agregar los mensajes del Back si es que hay
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+
+                    string errorMessage;
+                    try
+                    {
+                        var errorObj = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, string>>(errorResponse);
+                        errorMessage = errorObj != null && errorObj.ContainsKey("message")
+                            ? errorObj["message"]
+                            : "Error desconocido al eliminar el autor.";
+                    }
+                    catch
+                    {
+                        errorMessage = "Error desconocido al eliminar el autor.";
+                    }
+
+                    ShowMessage(errorMessage, "warning");
                 }
             }
             catch (Exception ex)

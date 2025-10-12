@@ -114,13 +114,23 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAuthor(int id)
         {
-            var result = await _authorService.DeleteAuthorAsync(id);
-            if (!result)
+            try
             {
-                return NotFound();
-            }
+                var result = await _authorService.DeleteAuthorAsync(id);
 
-            return NoContent();
+                if (!result)
+                    return NotFound(new { message = "Autor no encontrado." });
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "Error interno al eliminar el autor." });
+            }
         }
     }
 }
