@@ -295,5 +295,16 @@ namespace Frontend.Pages
             string script = $"showMessage('{message}', '{type}');";
             ScriptManager.RegisterStartupScript(this, GetType(), "ShowMessage", script, true);
         }
+
+        protected void gvLibros_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                // Actualizar contador de libros
+                int booksCount = gvLibros.Rows.Count;
+                ltBookCount.Text = $"{booksCount} books";
+
+            }
+        }
     }
 }
