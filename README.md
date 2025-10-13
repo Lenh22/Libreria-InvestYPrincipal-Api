@@ -54,6 +54,9 @@ dotnet restore
 # Crear la base de datos
 dotnet ef migrations add InitialCreate
 dotnet ef database update
+
+# Limpiar la base de datos
+dotnet ef database drop --force
 ```
 
 ### 2. Configuración del Backend
