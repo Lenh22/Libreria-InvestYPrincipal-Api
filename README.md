@@ -117,30 +117,173 @@ dotnet ef migrations list
 
 ## 🧱 Arquitectura
 
-El proyecto sigue un **patrón de arquitectura por capas** con separación clara de responsabilidades:
+El proyecto sigue un **patrón de arquitectura por capas** con separación clara de responsabilidades y comunicación HTTP entre componentes.
 
-### Backend (API)
-- **`Controllers/`** - Controladores REST que manejan las peticiones HTTP y validaciones
-- **`Services/`** - Lógica de negocio e interfaces para operaciones de datos
-- **`Models/`** - Entidades del dominio (Book, Author) con validaciones de datos
-- **`Dto/`** - Objetos de transferencia de datos para la comunicación API
-- **`Data/`** - Contexto de Entity Framework y datos de inicialización (SeedData)
+### Diagrama de Comunicación
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        FRONTEND (Web Forms)                     │
+├─────────────────────────────────────────────────────────────────┤
+│  Pages/           │  UserControls/     │  Dto/                 │
+│  ├─ Authors.aspx  │  ├─ BookForm.ascx  │  ├─ AuthorDto.cs      │
+│  └─ Books.aspx    │  └─ BookSearch.ascx│  └─ BookDto.cs        │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │ HTTP Requests (REST API)
+                      │ JSON over HTTPS
+                      ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                        BACKEND (Web API)                        │
+├─────────────────────────────────────────────────────────────────┤
+│  Controllers/      │  Services/        │  Models/              │
+│  ├─ AuthorsController│  ├─ AuthorService │  ├─ Author.cs        │
+│  └─ BooksController  │  └─ BookService   │  └─ Book.cs          │
+│                     │                   │                      │
+│  Dto/               │  Data/            │                      │
+│  ├─ AuthorDto.cs    │  ├─ LibraryDbContext│                    │
+│  └─ BookDto.cs      │  └─ SeedData.cs   │                      │
+└─────────────────────┬───────────────────────────────────────────┘
+                      │ Entity Framework Core
+                      │ LINQ Queries
+                      ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                    SQL SERVER LOCALDB                           │
+│  ┌─────────────┐    ┌─────────────┐    ┌─────────────────────┐  │
+│  │   Authors   │    │    Books    │    │   Relationships     │  │
+│  │             │◄───┤             │    │   (Foreign Keys)    │  │
+│  │ - Id        │    │ - Id        │    │                     │  │
+│  │ - Name      │    │ - Title     │    │ AuthorId → Authors  │  │
+│  │ - BirthDate │    │ - AuthorId  │    │                     │  │
+│  │ - Nationality│   │ - ISBN      │    │                     │  │
+│  └─────────────┘    └─────────────┘    └─────────────────────┘  │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Comunicación entre Componentes
+
+#### 🔄 **Frontend ↔ Backend**
+- **Protocolo**: HTTP/HTTPS con JSON
+- **Método**: Peticiones REST (GET, POST, PUT, DELETE)
+- **CORS**: Configurado para permitir comunicación cross-origin
+- **Endpoints**: 
+  - `https://localhost:7000/api/authors`
+  - `https://localhost:7000/api/books`
+
+#### 🏗️ **Arquitectura por Capas del Backend**
+
+**1. Capa de Presentación (`Controllers/`)**
+- **Función**: Recibe peticiones HTTP y maneja respuestas
+- **Componentes específicos**:
+  - `AuthorsController` - Maneja operaciones CRUD de autores
+  - `BooksController` - Maneja operaciones CRUD de libros y búsquedas
+- **Comunicación**: 
+  - Recibe JSON del Frontend
+  - Valida datos con Data Annotations
+  - Delega lógica de negocio a Services
+  - Retorna DTOs serializados en JSON
+
+**2. Capa de Lógica de Negocio (`Services/`)**
+- **Función**: Implementa reglas de negocio y validaciones
+- **Componentes específicos**:
+  - `IAuthorService` / `AuthorService` - Lógica de negocio para autores
+  - `IBookService` / `BookService` - Lógica de negocio para libros
+- **Comunicación**:
+  - Recibe entidades de Controllers
+  - Valida ISBN único, fechas, relaciones
+  - Accede a datos via Entity Framework
+  - Retorna entidades procesadas
+
+**3. Capa de Acceso a Datos (`Data/`)**
+- **Función**: Gestiona persistencia y consultas a BD
+- **Componentes específicos**:
+  - `LibraryDbContext` - Contexto de Entity Framework
+  - `SeedData` - Datos de inicialización (autores y libros de prueba)
+- **Comunicación**:
+  - `LibraryDbContext` maneja conexiones SQL Server
+  - LINQ queries se traducen a SQL
+  - Entity Framework maneja mapeo objeto-relacional
+
+**4. Capa de Modelos (`Models/`)**
+- **Función**: Define entidades del dominio
+- **Componentes específicos**:
+  - `Author` - Entidad autor con validaciones (nombre, fecha nacimiento, nacionalidad)
+  - `Book` - Entidad libro con validaciones (título, ISBN, precio, páginas, etc.)
+- **Comunicación**:
+  - `Author` y `Book` con relaciones Foreign Key
+  - Validaciones con Data Annotations
+  - Serialización JSON con `JsonIgnore` para referencias circulares
+
+**5. Capa de Transferencia (`Dto/`)**
+- **Función**: Objetos de transferencia de datos entre capas
+- **Componentes específicos**:
+  - `AuthorDto` - DTO para transferencia de datos de autores
+  - `BookDto` - DTO para transferencia de datos de libros
+  - `CreateBookDto` / `UpdateBookDto` - DTOs específicos para operaciones de libros
+- **Comunicación**:
+  - Facilita la transferencia segura de datos entre Frontend y Backend
+  - Evita exposición directa de entidades de dominio
+  - Permite versionado independiente de la API
 
 ### Frontend (Web Forms)
-- **`Pages/`** - Páginas ASPX para la interfaz de usuario (Authors.aspx, Books.aspx)
-- **`UserControls/`** - Controles reutilizables (BookForm.ascx, BookSearch.ascx)
-- **`Dto/`** - DTOs compartidos entre frontend y backend
 
-### Flujo de datos
-1. **Frontend** realiza peticiones HTTP al **Backend API**
-2. **Controllers** procesan las peticiones y delegan a **Services**
-3. **Services** implementan la lógica de negocio y acceden a la **Base de datos** via **Entity Framework**
-4. Los **DTOs** facilitan la transferencia de datos entre capas
-5. **CORS** configurado para permitir comunicación entre frontend y backend
+**1. Capa de Presentación (`Pages/`)**
+- **Función**: Páginas web que interactúan con el usuario
+- **Componentes específicos**:
+  - `Authors.aspx` - Página para gestión de autores
+  - `Books.aspx` - Página para gestión de libros
+- **Comunicación**:
+  - Renderiza la interfaz de usuario
+  - Captura eventos del usuario
+  - Realiza peticiones AJAX al Backend API
 
-### Características técnicas
-- **Inyección de dependencias** para servicios
-- **Validación de modelos** con Data Annotations
-- **Manejo de referencias circulares** en JSON
-- **Seeding automático** de datos de prueba al iniciar la aplicación
-- **Búsquedas dinámicas** con filtros opcionales
+**2. Capa de Controles (`UserControls/`)**
+- **Función**: Controles reutilizables para funcionalidades específicas
+- **Componentes específicos**:
+  - `BookForm.ascx` - Formulario para crear/editar libros
+  - `BookSearch.ascx` - Control de búsqueda de libros
+- **Comunicación**:
+  - Encapsula lógica de UI reutilizable
+  - Maneja validaciones del lado cliente
+  - Comunica con páginas padre via eventos
+
+**3. Capa de Transferencia (`Dto/`)**
+- **Función**: DTOs compartidos con el Backend
+- **Componentes específicos**:
+  - `AuthorDto.cs` - DTO para autores (compartido con Backend)
+  - `BookDto.cs` - DTO para libros (compartido con Backend)
+- **Comunicación**:
+  - Deserializa respuestas JSON del Backend
+  - Serializa datos para envío al Backend
+  - Mantiene consistencia de tipos entre Frontend y Backend
+
+#### 📦 **Paquetes y Dependencias**
+
+**Backend Dependencies:**
+- `Microsoft.EntityFrameworkCore.SqlServer` → Conexión a BD
+- `Swashbuckle.AspNetCore` → Documentación API
+- `System.Text.Json` → Serialización JSON
+
+**Frontend Dependencies:**
+- `Newtonsoft.Json` → Deserialización JSON de respuestas API
+- `Bootstrap` → UI responsiva
+- `jQuery` → Peticiones AJAX a la API
+
+### Flujo de Datos Detallado
+
+1. **Usuario interactúa** con páginas ASPX (Authors.aspx, Books.aspx)
+2. **UserControls** capturan datos y realizan peticiones AJAX
+3. **HTTP Request** → Backend API (Controllers)
+4. **Controllers** validan y delegan a Services
+5. **Services** aplican lógica de negocio y acceden a BD
+6. **Entity Framework** ejecuta queries SQL
+7. **SQL Server** retorna datos
+8. **Response JSON** → Frontend via HTTP
+9. **UI se actualiza** con datos recibidos
+
+### Características Técnicas de Comunicación
+- **Inyección de dependencias** para desacoplar capas
+- **DTOs** para transferencia segura de datos
+- **Validación en múltiples capas** (Frontend + Backend)
+- **Manejo de errores** con códigos HTTP estándar
+- **CORS** para comunicación cross-origin
+- **Seeding automático** de datos de prueba
