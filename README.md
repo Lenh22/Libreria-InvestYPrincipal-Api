@@ -1,294 +1,146 @@
-# Sistema de Librería - Backend + Frontend
+# 📚 Librería InvestYPrincipal API
 
-Este proyecto implementa un **Sistema de Gestión de Librería** completo con arquitectura de microservicios, utilizando **.NET Core Web API** como Backend y **ASP.NET WebForms** como Frontend.
+## 📘 Descripción general
 
-## 🏗️ Arquitectura del Sistema
+Esta aplicación es un **sistema de gestión de librería** que permite administrar un catálogo de libros y autores. El sistema está compuesto por una **API REST** desarrollada en .NET 8 y un **frontend web** en ASP.NET Web Forms que consume la API.
 
-### Backend (API REST)
-- **Tecnología**: .NET Core 8.0 Web API
-- **Base de Datos**: SQL Server con Entity Framework Core (Code First)
-- **Documentación**: Swagger/OpenAPI
-- **Arquitectura**: N-Capas (Models, Controllers, Services, Data)
+La aplicación permite realizar operaciones CRUD completas sobre libros y autores, incluyendo búsquedas avanzadas por título, género y nombre de autor. El sistema está diseñado para gestionar información bibliográfica completa incluyendo metadatos como ISBN, editorial, fecha de publicación, precio y idioma.
 
-### Frontend (Cliente Web)
-- **Tecnología**: ASP.NET WebForms (.NET Framework 4.7.2)
-- **UI Framework**: Bootstrap 5.2.3
-- **Iconos**: Font Awesome 6.4.0
-- **Comunicación**: HTTP/JSON con Newtonsoft.Json 13.0.3
-- **Validaciones**: Cliente y servidor
+## ⚙️ Tecnologías
 
-## 📋 Características Principales
+### Backend API
+- **.NET 8.0** - Framework principal
+- **ASP.NET Core Web API** - Para la construcción de la API REST
+- **Entity Framework Core 9.0.9** - ORM para acceso a datos
+- **SQL Server LocalDB** - Base de datos relacional
+- **Swagger/OpenAPI 9.0.4** - Documentación automática de la API
+- **System.Text.Json** - Serialización JSON con manejo de referencias circulares
 
-### ✅ Entidades del Sistema
-- **Author**: Id, Name, BirthDate, Nationality
-- **Book**: Id, Title, Genre, PublishDate, Pages (1-1000), Publisher, ISBN, Price (1-1000), Language, AuthorId (FK)
+### Frontend Web
+- **ASP.NET Web Forms 4.7.2** - Framework web tradicional de Microsoft
+- **Bootstrap 5.2.3** - Framework CSS para diseño responsivo
+- **jQuery 3.7.0** - Librería JavaScript
+- **Newtonsoft.Json 13.0.3** - Serialización JSON en el frontend
+- **Microsoft.AspNet.FriendlyUrls 1.0.2** - URLs amigables
 
-### ✅ Funcionalidades CRUD Completas
-- **Gestión de Autores**: Crear, Leer, Actualizar, Eliminar
-- **Gestión de Libros**: Crear, Leer, Actualizar, Eliminar
-- **Búsqueda Avanzada**: Filtros por título, género y autor
-- **Validaciones**: Rangos, fechas, campos obligatorios
+### Herramientas de Desarrollo
+- **Entity Framework Tools 9.0.9** - Migraciones y scaffolding
+- **Microsoft.CodeDom.Providers.DotNetCompilerPlatform 2.0.1** - Compilación dinámica
 
-### ✅ Arquitectura N-Capas
-- **Presentación**: WebForms con Master Pages y User Controls
-- **Entidades**: Modelos con validaciones de datos
-- **Negocio/Servicios**: Lógica de negocio en servicios
-- **Datos**: Entity Framework Core con Code First
+## 🚀 Inicio rápido
 
-## 🚀 Instalación y Configuración
+### Requisitos previos
+- **.NET 8.0 SDK** instalado
+- **SQL Server LocalDB** (incluido con Visual Studio)
+- **Visual Studio 2022** o **Visual Studio Code** (recomendado)
 
-### Prerrequisitos
-- .NET 8.0 SDK
-- SQL Server (LocalDB incluido)
-- Visual Studio 2022 o VS Code
+### Ejecutar la API Backend
 
-### 1. Configuración de la Base de Datos
-
+1. **Navegar al directorio del backend:**
 ```bash
-# Navegar al directorio del Backend
 cd Backend
+   ```
 
-# Instalar dependencias
+2. **Restaurar dependencias:**
+   ```bash
 dotnet restore
+   ```
 
-# Crear la base de datos
+3. **Crear y aplicar migraciones de base de datos:**
+   ```bash
+   # Crear la migración inicial
 dotnet ef migrations add InitialCreate
+   
+   # Aplicar migraciones a la base de datos
 dotnet ef database update
-
-# Limpiar la base de datos
-dotnet ef database drop --force
 ```
 
-### 2. Configuración del Backend
-
+4. **Ejecutar la aplicación:**
 ```bash
-# Ejecutar el Backend
-cd Backend
 dotnet run
 ```
 
-El Backend estará disponible en:
-- **HTTP**: http://localhost:7000
-- **Swagger UI**: http://localhost:7000/swagger
+5. **Acceder a la documentación de la API:**
+   - Swagger UI: `https://localhost:7000/swagger`
+   - API Base URL: `https://localhost:7000/api`
 
-### 3. Configuración del Frontend
+### Ejecutar el Frontend Web
+
+1. **Navegar al directorio del frontend:**
+```bash
+   cd Frontend/Frontend
+   ```
+
+2. **Abrir en Visual Studio:**
+   ```bash
+   start Frontend.sln
+   ```
+
+3. **Ejecutar el proyecto** (F5 o Ctrl+F5)
+
+4. **Acceder a la aplicación:**
+   - URL: `http://localhost:5000` o `https://localhost:44392`
+
+### Variables de entorno
+
+La aplicación utiliza la siguiente cadena de conexión por defecto:
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=(localdb)\\MSSQLLocalDB;Database=LibraryDB;Trusted_Connection=True;"
+}
+```
+
+### Endpoints principales
+
+- **Autores:** `GET/POST/PUT/DELETE /api/authors`
+- **Libros:** `GET/POST/PUT/DELETE /api/books`
+- **Búsqueda de libros:** `GET /api/books/search?title={title}&genre={genre}&authorName={authorName}`
+
+### Comandos útiles de Entity Framework
 
 ```bash
-# Ejecutar el proyecto WebForms
-cd Frontend
-# Abrir Frontend.sln en Visual Studio y ejecutar con F5
+# Crear una nueva migración
+dotnet ef migrations add NombreDeLaMigracion
+
+# Aplicar migraciones pendientes
+dotnet ef database update
+
+# Revertir la última migración
+dotnet ef database update MigracionAnterior
+
+# Limpiar completamente la base de datos
+dotnet ef database drop --force
+
+# Ver el estado de las migraciones
+dotnet ef migrations list
 ```
 
-El frontend estará disponible en:
-- **HTTPS**: https://localhost:44392
-- **Páginas principales**:
-  - Autores: https://localhost:44392/Pages/Authors.aspx
-  - Libros: https://localhost:44392/Pages/Books.aspx
+## 🧱 Arquitectura
 
-## 📚 Endpoints del Backend
-
-### Autores
-- `GET /api/authors` - Obtener todos los autores
-- `GET /api/authors/{id}` - Obtener autor por ID
-- `POST /api/authors` - Crear nuevo autor
-- `PUT /api/authors/{id}` - Actualizar autor
-- `DELETE /api/authors/{id}` - Eliminar autor
-
-### Libros
-- `GET /api/books` - Obtener todos los libros
-- `GET /api/books/{id}` - Obtener libro por ID
-- `GET /api/books/search` - Buscar libros con filtros
-- `POST /api/books` - Crear nuevo libro
-- `PUT /api/books/{id}` - Actualizar libro
-- `DELETE /api/books/{id}` - Eliminar libro
-
-## 🎯 Características Técnicas
+El proyecto sigue un **patrón de arquitectura por capas** con separación clara de responsabilidades:
 
 ### Backend (API)
-- **Entity Framework Core**: Code First con migraciones
-- **Swagger**: Documentación automática de la API
-- **CORS**: Configurado para permitir requests del frontend (puertos 5000, 5001, 44392)
-- **Validaciones**: Data Annotations en modelos
-- **Servicios**: Inyección de dependencias
-- **Async/Await**: Operaciones asíncronas
+- **`Controllers/`** - Controladores REST que manejan las peticiones HTTP y validaciones
+- **`Services/`** - Lógica de negocio e interfaces para operaciones de datos
+- **`Models/`** - Entidades del dominio (Book, Author) con validaciones de datos
+- **`Dto/`** - Objetos de transferencia de datos para la comunicación API
+- **`Data/`** - Contexto de Entity Framework y datos de inicialización (SeedData)
 
-### Frontend (WebForms)
-- **Master Pages**: Layout consistente con Site.Master
-- **User Controls**: Componentes reutilizables (BookForm, BookSearch)
-- **Validaciones**: RequiredFieldValidator, RangeValidator, CompareValidator
-- **Bootstrap 5.2.3**: UI moderna y responsive
-- **Font Awesome 6.4.0**: Iconografía profesional
-- **HTTP Client**: Comunicación asíncrona con la API
-- **Modales**: Formularios en ventanas emergentes
-- **jQuery 3.7.0**: Interactividad y manipulación DOM
+### Frontend (Web Forms)
+- **`Pages/`** - Páginas ASPX para la interfaz de usuario (Authors.aspx, Books.aspx)
+- **`UserControls/`** - Controles reutilizables (BookForm.ascx, BookSearch.ascx)
+- **`Dto/`** - DTOs compartidos entre frontend y backend
 
-## 🔧 Validaciones Implementadas
+### Flujo de datos
+1. **Frontend** realiza peticiones HTTP al **Backend API**
+2. **Controllers** procesan las peticiones y delegan a **Services**
+3. **Services** implementan la lógica de negocio y acceden a la **Base de datos** via **Entity Framework**
+4. Los **DTOs** facilitan la transferencia de datos entre capas
+5. **CORS** configurado para permitir comunicación entre frontend y backend
 
-### Campos Obligatorios
-- Todos los campos de Author y Book son requeridos
-- Validaciones en cliente (WebForms) y servidor (API)
-
-### Rangos Numéricos
-- **Páginas**: 1-1000
-- **Precio**: 1-1000
-
-### Fechas
-- **Fecha de nacimiento**: No puede ser futura
-- **Fecha de publicación**: No puede ser futura
-
-### Longitud de Campos
-- **Nombre**: Máximo 100 caracteres
-- **Nacionalidad**: Máximo 50 caracteres
-- **Título**: Máximo 200 caracteres
-- **Editorial**: Máximo 100 caracteres
-- **ISBN**: Máximo 20 caracteres
-- **Idioma**: Máximo 50 caracteres
-
-## 🎨 Interfaz de Usuario
-
-### Páginas Principales
-- **Books.aspx**: Gestión completa de libros con búsqueda
-- **Authors.aspx**: Gestión completa de autores
-- **Master Page**: Navegación y layout consistente
-
-### Componentes Reutilizables
-- **BookSearch**: Control de búsqueda con múltiples filtros
-- **BookForm**: Formulario completo para libros con validaciones
-
-### Características de UX
-- **Modales**: Formularios en ventanas emergentes
-- **Búsqueda**: Filtros por título, género y autor
-- **Confirmaciones**: Diálogos de confirmación para eliminación
-- **Mensajes**: Alertas de éxito y error
-- **Responsive**: Diseño adaptable a diferentes pantallas
-
-## 🏛️ Arquitectura de Microservicios
-
-### Separación de Responsabilidades
-- **Backend (API REST)**: Lógica de negocio y acceso a datos
-- **Frontend (WebForms)**: Presentación y experiencia de usuario
-- **Comunicación**: HTTP/JSON entre capas
-
-### Beneficios
-- **Escalabilidad**: Cada servicio puede escalarse independientemente
-- **Mantenibilidad**: Código organizado en capas bien definidas
-- **Testabilidad**: Servicios pueden probarse por separado
-- **Flexibilidad**: Fácil cambio de tecnologías en cada capa
-
-## 🔄 Migración y Nueva Estructura
-
-### ✅ Migración Completada
-El proyecto ha sido migrado exitosamente de la estructura original a una nueva arquitectura optimizada:
-
-**Antes:**
-```
-Libreria-InvestYPrincipal-Web/ (Proyecto original con problemas)
-```
-
-**Ahora:**
-```
-Backend/ (Backend API)
-Frontend/ (Frontend WebForms)
-```
-
-### 🔧 Cambios Realizados
-- **✅ Namespaces**: Actualizados de `Libreria_InvestYPrincipal_Web` a `Frontend`
-- **✅ Referencias**: Corregidas todas las dependencias y using statements
-- **✅ Operaciones asíncronas**: Implementadas correctamente con `Async="true"`
-- **✅ User Controls**: Accesibilidad y referencias corregidas
-- **✅ URLs de Backend**: Configuradas para `http://localhost:7000/api`
-- **✅ ContentPlaceHolder**: Agregado `head` en Site.Master
-
-### 🚀 URLs de Acceso
-- **Backend (API)**: http://localhost:7000
-- **Swagger UI**: http://localhost:7000/swagger
-- **Frontend WebForms**: https://localhost:44392
-- **Páginas principales**:
-  - Autores: https://localhost:44392/Pages/Authors.aspx
-  - Libros: https://localhost:44392/Pages/Books.aspx
-- **Documentación Backend**: Disponible en Swagger UI
-
-## 📊 Estructura del Proyecto
-
-```
-Libreria-InvestYPrincipal-Api/
-├── Backend/                               # Backend API
-│   ├── Controllers/                       # Controladores REST
-│   ├── Models/                           # Entidades del dominio
-│   ├── Services/                         # Lógica de negocio
-│   ├── Data/                             # Contexto de EF
-│   └── Program.cs                        # Configuración del Backend
-├── Frontend/                             # Frontend WebForms
-│   └── Frontend/                         # Proyecto WebForms
-│       ├── Pages/                        # Páginas principales
-│       ├── UserControls/                 # Componentes reutilizables
-│       ├── Dto/                          # Data Transfer Objects
-│       ├── Site.Master                   # Master Page principal
-│       └── Web.config                    # Configuración del frontend
-└── README.md                             # Este archivo
-```
-
-## 🧪 Testing
-
-### Swagger UI
-- Acceder a http://localhost:7000/swagger
-- Probar todos los endpoints directamente
-- Ver documentación automática del Backend
-
-### Postman
-- Importar colección desde el archivo `.http`
-- Probar flujos completos de CRUD
-- Validar respuestas y códigos de estado
-
-## 🚀 Despliegue
-
-### Desarrollo Local
-1. Ejecutar el Backend: `dotnet run` en el directorio del Backend
-2. Ejecutar el frontend: F5 en Visual Studio (abrir Frontend.sln)
-3. Acceder a http://localhost:7000/swagger para probar el Backend
-4. Acceder a https://localhost:44392 para usar la aplicación
-
-### Producción
-- **Backend**: Desplegar en Azure App Service o IIS
-- **Frontend**: Desplegar en IIS
-- **Base de Datos**: SQL Server en Azure o servidor dedicado
-
-## 📝 Notas de Desarrollo
-
-### Tecnologías Utilizadas
-- **.NET Core 8.0**: Framework principal del Backend
-- **.NET Framework 4.7.2**: Framework del Frontend
-- **Entity Framework Core 8.0**: ORM
-- **Swagger/OpenAPI**: Documentación de API
-- **Bootstrap 5.2.3**: Framework CSS responsive
-- **Font Awesome 6.4.0**: Iconografía profesional
-- **Newtonsoft.Json 13.0.3**: Serialización JSON
-- **jQuery 3.7.0**: Manipulación DOM y AJAX
-
-### Patrones Implementados
-- **Repository Pattern**: A través de Entity Framework
-- **Dependency Injection**: En Program.cs
-- **N-Layer Architecture**: Separación clara de responsabilidades
-- **RESTful API**: Endpoints siguiendo convenciones REST
-
-## 🤝 Contribución
-
-1. Fork el proyecto
-2. Crear una rama para la feature (`git checkout -b feature/AmazingFeature`)
-3. Commit los cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abrir un Pull Request
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE](LICENSE) para detalles.
-
-## 👥 Autores
-
-- **Desarrollador Principal**: [Tu Nombre]
-- **Proyecto**: Sistema de Librería - TP API Web
-- **Institución**: [Nombre de la Institución]
-
----
-
-**Nota**: Este proyecto demuestra la implementación de una arquitectura de microservicios moderna con .NET Core y WebForms, siguiendo las mejores prácticas de desarrollo y diseño de software.
+### Características técnicas
+- **Inyección de dependencias** para servicios
+- **Validación de modelos** con Data Annotations
+- **Manejo de referencias circulares** en JSON
+- **Seeding automático** de datos de prueba al iniciar la aplicación
+- **Búsquedas dinámicas** con filtros opcionales
