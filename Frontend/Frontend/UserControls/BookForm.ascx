@@ -93,7 +93,7 @@
                     <asp:RequiredFieldValidator ID="rfvPrice" runat="server" ControlToValidate="txtPrice" 
                         ErrorMessage="Price is required" CssClass="text-danger" Display="Dynamic"></asp:RequiredFieldValidator>
                      <asp:RangeValidator ID="rvPrice" runat="server" ControlToValidate="txtPrice" 
-                        MinimumValue="1" MaximumValue="99999" Type="Double"
+                        MinimumValue="1" MaximumValue="99999" 
                         ErrorMessage="Number of price must be between 1 and 99999" CssClass="text-danger" Display="Dynamic"></asp:RangeValidator>
                 </div>
             </div>
