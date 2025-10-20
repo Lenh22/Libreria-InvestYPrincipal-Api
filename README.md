@@ -37,28 +37,28 @@ La aplicación permite realizar operaciones CRUD completas sobre libros y autore
 ### Ejecutar la API Backend
 
 1. **Navegar al directorio del backend:**
-```bash
-cd Backend
+   ```bash
+   cd Backend
    ```
 
 2. **Restaurar dependencias:**
    ```bash
-dotnet restore
+   dotnet restore
    ```
 
 3. **Crear y aplicar migraciones de base de datos:**
    ```bash
    # Crear la migración inicial
-dotnet ef migrations add InitialCreate
+   dotnet ef migrations add InitialCreate
    
    # Aplicar migraciones a la base de datos
-dotnet ef database update
-```
+   dotnet ef database update
+   ```
 
 4. **Ejecutar la aplicación:**
-```bash
-dotnet run
-```
+   ```bash
+   dotnet run
+   ```
 
 5. **Acceder a la documentación de la API:**
    - Swagger UI: `https://localhost:7000/swagger`
@@ -67,7 +67,7 @@ dotnet run
 ### Ejecutar el Frontend Web
 
 1. **Navegar al directorio del frontend:**
-```bash
+   ```bash
    cd Frontend/Frontend
    ```
 
