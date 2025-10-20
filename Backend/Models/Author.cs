@@ -9,7 +9,7 @@ namespace Libreria_InvestYPrincipal_Api.Models
         public int Id { get; set; }
 
         [Required(ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(100, ErrorMessage = "El nombre no puede exceder 100 caracteres")]
+        [StringLength(200, ErrorMessage = "El nombre no puede exceder 200 caracteres")]
         public string Name { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La fecha de nacimiento es obligatoria")]

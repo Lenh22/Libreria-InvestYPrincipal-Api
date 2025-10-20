@@ -29,6 +29,8 @@ namespace Libreria_InvestYPrincipal_Api.Services
 
         public async Task<Book> CreateBookAsync(Book book)
         {
+            ValidateBook(book);
+
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
             return book;
@@ -36,9 +38,12 @@ namespace Libreria_InvestYPrincipal_Api.Services
 
         public async Task<Book?> UpdateBookAsync(int id, Book book)
         {
+
             var existingBook = await _context.Books.FindAsync(id);
             if (existingBook == null)
                 return null;
+
+            ValidateBook(book, isUpdate: true);
 
             existingBook.Title = book.Title;
             existingBook.Genre = book.Genre;
@@ -58,7 +63,7 @@ namespace Libreria_InvestYPrincipal_Api.Services
         {
             var book = await _context.Books.FindAsync(id);
             if (book == null)
-                return false;
+                throw new ArgumentException("No se ha encontrado el libro en la base de datos.");
 
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
@@ -90,6 +95,24 @@ namespace Libreria_InvestYPrincipal_Api.Services
             }
 
             return await query.ToListAsync();
+        }
+        private void ValidateBook(Book book, bool isUpdate = false)
+        {
+            //Verificar ISBN unico
+            var isbnExists = _context.Books.Any(b => b.ISBN == book.ISBN && (!isUpdate || b.Id != book.Id));
+
+            if (isbnExists)
+                throw new ArgumentException("Ya existe un libro con el mismo ISBN.");
+
+            if (book.PublishDate > DateTime.Today)
+                throw new ArgumentException("La fecha de publicacion no puede ser futura.");
+
+            if (book.AuthorId <= 0)
+                throw new ArgumentException("Debe especificar un autor valido.");
+
+            var authorExists = _context.Authors.Any(a => a.Id == book.AuthorId);
+            if (!authorExists)
+                throw new ArgumentException("El autor no existe en la base de datos.");
         }
     }
 }

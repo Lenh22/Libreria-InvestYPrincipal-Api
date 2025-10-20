@@ -33,7 +33,7 @@ namespace Libreria_InvestYPrincipal_Api.Models
         public string ISBN { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "El precio es obligatorio")]
-        [Range(1, 1000, ErrorMessage = "El precio debe estar entre 1 y 1000")]
+        [Range(1, 99999, ErrorMessage = "El precio debe estar entre 1 y 99999")]
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
 

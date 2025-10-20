@@ -177,6 +177,15 @@ namespace Frontend.UserControls
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvPrice;
 
         /// <summary>
+        /// Control rvPrice.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RangeValidator rvPrice;
+
+        /// <summary>
         /// Control ddlLanguage.
         /// </summary>
         /// <remarks>

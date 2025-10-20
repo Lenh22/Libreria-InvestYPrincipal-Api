@@ -96,48 +96,56 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
         [HttpPost]
         public async Task<ActionResult<BookDto>> CreateBook(CreateBookDto bookDto)
         {
-            if (!ModelState.IsValid)
+            try
             {
-                return BadRequest(ModelState);
-            }
-            var book = new Book
-            {
-                Title = bookDto.Title,
-                Genre = bookDto.Genre,
-                PublishDate = bookDto.PublishDate,
-                Pages = bookDto.Pages,
-                Publisher = bookDto.Publisher,
-                ISBN = bookDto.ISBN,
-                Price = bookDto.Price,
-                Language = bookDto.Language,
-                AuthorId = bookDto.AuthorId
-            };
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState); // Manda mensajes de error de validación
+                }
+                var book = new Book
+                {
+                    Title = bookDto.Title,
+                    Genre = bookDto.Genre,
+                    PublishDate = bookDto.PublishDate,
+                    Pages = bookDto.Pages,
+                    Publisher = bookDto.Publisher,
+                    ISBN = bookDto.ISBN,
+                    Price = bookDto.Price,
+                    Language = bookDto.Language,
+                    AuthorId = bookDto.AuthorId
+                };
 
-            var createdBook = await _bookService.CreateBookAsync(book);
-            var createdBookDto = new BookDto
+                var createdBook = await _bookService.CreateBookAsync(book);
+                var createdBookDto = new BookDto
+                {
+                    Id = createdBook.Id,
+                    Title = createdBook.Title,
+                    Genre = createdBook.Genre,
+                    PublishDate = createdBook.PublishDate,
+                    Pages = createdBook.Pages,
+                    Publisher = createdBook.Publisher,
+                    ISBN = createdBook.ISBN,
+                    Price = createdBook.Price,
+                    Language = createdBook.Language,
+                    AuthorId = createdBook.AuthorId,
+                    AuthorName = createdBook.Author != null ? createdBook.Author.Name : string.Empty
+                };
+                return CreatedAtAction(nameof(GetBook), new { id = createdBookDto.Id }, createdBookDto);
+            }
+            catch (ArgumentException ex)
             {
-                Id = createdBook.Id,
-                Title = createdBook.Title,
-                Genre = createdBook.Genre,
-                PublishDate = createdBook.PublishDate,
-                Pages = createdBook.Pages,
-                Publisher = createdBook.Publisher,
-                ISBN = createdBook.ISBN,
-                Price = createdBook.Price,
-                Language = createdBook.Language,
-                AuthorId = createdBook.AuthorId,
-                AuthorName = createdBook.Author != null ? createdBook.Author.Name : string.Empty
-            };
-            return CreatedAtAction(nameof(GetBook), new { id = createdBookDto.Id }, createdBookDto);
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
         /// Actualiza un libro existente
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateBook(int id, UpdateBookDto dto)
         {
+
             if (id != dto.Id)
             {
-                return BadRequest();
+                return BadRequest("El ID del libro no coincide con el parámetro.");
             }
 
             if (!ModelState.IsValid)
@@ -159,25 +167,38 @@ namespace Libreria_InvestYPrincipal_Api.Controllers
                 AuthorId = dto.AuthorId
             };
 
-            var updatedBook = await _bookService.UpdateBookAsync(id, book);
-            if (updatedBook == null)
+            try
             {
-                return NotFound();
+                var updatedBook = await _bookService.UpdateBookAsync(id, book);
+                if (updatedBook == null)
+                {
+                    return NotFound("No se encontró el libro a actualizar.");
+                }
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
             }
 
-            return NoContent();
         }
         /// Elimina un libro
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
         {
-            var result = await _bookService.DeleteBookAsync(id);
-            if (!result)
+            try
             {
-                return NotFound();
-            }
+                var result = await _bookService.DeleteBookAsync(id);
+                if (!result)
+                    return NotFound(new { message = "Libro no encontrado." });
 
-            return NoContent();
+                return NoContent(); //204
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
+
     }
 }
