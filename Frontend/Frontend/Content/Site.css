@@ -1,0 +1,640 @@
+﻿/* ===== ESTILOS MODERNOS Y PROFESIONALES ===== */
+
+/* Variables CSS */
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Fuente personalizada */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+/* Contenedor principal */
+.body-content {
+    padding: 1.5rem 1rem;
+    min-height: calc(100vh - 200px);
+}
+
+/* ===== NAVEGACIÓN ===== */
+.navbar {
+    box-shadow: var(--box-shadow);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: var(--transition);
+    border-radius: var(--border-radius);
+    margin: 0 0.25rem;
+}
+
+.nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+}
+
+/* ===== TARJETAS Y PANELES ===== */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0 !important;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    transition: var(--transition);
+    border: none;
+    text-transform: none;
+    position: relative;
+}
+
+/* Iconos para botones específicos */
+#btnNewBook::before {
+    content: "\f067"; /* fa-plus */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 0.5rem;
+}
+
+#btnAddFirstBook::before {
+    content: "\f067"; /* fa-plus */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 0.5rem;
+}
+
+/* Iconos para botones de acción en GridView */
+.btn-warning::before {
+    content: "\f044"; /* fa-edit */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 0.25rem;
+}
+
+.btn-danger::before {
+    content: "\f1f8"; /* fa-trash */
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    margin-right: 0.25rem;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #146c43);
+    border: none;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color), #b02a37);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--warning-color), #e0a800);
+    border: none;
+    color: #000;
+}
+
+.btn-info {
+    background: linear-gradient(135deg, var(--info-color), #0aa2c0);
+    border: none;
+}
+
+/* ===== FORMULARIOS ===== */
+.form-control {
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    transform: translateY(-1px);
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+/* ===== TABLAS ===== */
+.table {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border: none;
+    font-weight: 600;
+    color: var(--dark-color);
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-top: 1px solid #f1f3f4;
+}
+
+.table tbody tr:hover {
+    background-color: rgba(13, 110, 253, 0.05);
+    transform: scale(1.01);
+    transition: var(--transition);
+}
+
+/* ===== BADGES Y ETIQUETAS ===== */
+.badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 50px;
+    font-weight: 500;
+}
+
+/* ===== ALERTAS ===== */
+.alert {
+    border: none;
+    border-radius: var(--border-radius);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d1e7dd, #a3d9a4);
+    color: #0f5132;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #f8d7da, #f5c2c7);
+    color: #842029;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+    color: #664d03;
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #d1ecf1, #b8daff);
+    color: #055160;
+}
+
+/* ===== MODALES ===== */
+.modal-content {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-title {
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* ===== ICONOS ===== */
+.fas, .far, .fab {
+    transition: var(--transition);
+}
+
+.btn:hover .fas,
+.btn:hover .far,
+.btn:hover .fab {
+    transform: scale(1.1);
+}
+
+/* ===== UTILIDADES ===== */
+.shadow-custom {
+    box-shadow: var(--box-shadow);
+}
+
+.rounded-custom {
+    border-radius: var(--border-radius);
+}
+
+.text-gradient {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+    .body-content {
+        padding: 1rem 0.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .table-responsive {
+        border-radius: var(--border-radius);
+    }
+    
+    .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .btn-group .btn {
+        width: auto;
+    }
+}
+
+/* ===== ANIMACIONES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* ===== ESTADOS DE CARGA ===== */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* ===== PERSONALIZACIÓN ESPECÍFICA ===== */
+.page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--dark-color);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Hero Section específico - Tamaños más proporcionados */
+.hero-section {
+    background: linear-gradient(135deg, #0d6efd, #0056b3, #004085) !important;
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 0 !important; /* Reducido de py-5 */
+    margin-bottom: 2rem !important; /* Reducido de mb-5 */
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section h1 {
+    color: white !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: 800;
+    font-size: 2.5rem !important; /* Reducido de display-4 */
+    margin-bottom: 1rem !important; /* Reducido de mb-4 */
+}
+
+.hero-section p {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    font-weight: 500;
+    font-size: 1.1rem !important; /* Reducido de lead */
+    margin-bottom: 1.5rem !important; /* Reducido de mb-4 */
+}
+
+.hero-section i {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.hero-section .fa-library {
+    font-size: 6rem !important; /* Reducido de fa-10x */
+    opacity: 0.6;
+}
+
+/* Botones del hero con tamaño consistente */
+.hero-section .btn {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-width: 160px;
+    text-align: center;
+}
+
+.hero-section .btn-lg {
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    min-width: 160px;
+    text-align: center;
+}
+
+/* Call to Action Section */
+.bg-gradient-primary h3,
+.bg-gradient-primary p {
+    color: white !important;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Botones consistentes en Call to Action */
+.bg-gradient-primary .btn {
+    background-color: white !important;
+    color: #0d6efd !important;
+    border: 2px solid white !important;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.bg-gradient-primary .btn:hover {
+    background-color: #f8f9fa !important;
+    color: #0d6efd !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.bg-gradient-primary .btn i {
+    color: #0d6efd !important;
+    margin-right: 0.5rem;
+}
+
+/* Botón especial para API Docs */
+.bg-gradient-primary .btn-success {
+    background-color: #198754 !important;
+    color: white !important;
+    border: 2px solid #198754 !important;
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.bg-gradient-primary .btn-success:hover {
+    background-color: #146c43 !important;
+    color: white !important;
+    border-color: #146c43 !important;
+}
+
+.bg-gradient-primary .btn-success i {
+    color: white !important;
+}
+
+/* Mejorar el contenedor de botones */
+.bg-gradient-primary .d-flex {
+    gap: 1rem !important;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Asegurar que todos los botones tengan el mismo tamaño */
+.bg-gradient-primary .btn-lg {
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Tamaño consistente para todos los botones de la aplicación */
+.btn {
+    min-width: 160px;
+    text-align: center;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+.btn-sm {
+    min-width: 120px;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+}
+
+.btn-lg {
+    min-width: 160px;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+}
+
+/* Mejorar la parte inferior de la página */
+.container-fluid {
+    padding-bottom: 3rem;
+}
+
+/* Footer mejorado */
+footer {
+    margin-top: 4rem;
+    border-top: 1px solid #e9ecef;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+/* Espaciado mejorado para las secciones */
+.row {
+    margin-bottom: 1.5rem;
+}
+
+/* Espaciado específico para diferentes secciones */
+.mb-5 {
+    margin-bottom: 2rem !important;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem !important;
+}
+
+.mb-3 {
+    margin-bottom: 1rem !important;
+}
+
+/* Mejorar las cards */
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Mejorar los gradientes de headers */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #0d6efd, #0056b3, #004085) !important;
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #198754, #146c43, #0f5132) !important;
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800, #d39e00) !important;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--dark-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Títulos de cards más pequeños */
+.card-header h4 {
+    font-size: 1.25rem !important;
+    margin-bottom: 0 !important;
+}
+
+.card-header h5 {
+    font-size: 1.1rem !important;
+    margin-bottom: 0 !important;
+}
+
+.section-title i {
+    margin-right: 0.75rem;
+    color: var(--primary-color);
+}
+
+/* ===== MEJORAS PARA WEBFORMS ===== */
+.panel {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.panel-heading {
+    background: linear-gradient(135deg, var(--primary-color), #0056b3);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+}
+
+.panel-body {
+    padding: 1.5rem;
+}
+
+/* GridView personalizado */
+.gridview-container {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--box-shadow);
+}
+
+/* Inputs personalizados */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+select,
+textarea {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    outline: none;
+}

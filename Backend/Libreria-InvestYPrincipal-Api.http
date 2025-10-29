@@ -1,0 +1,84 @@
+### Test API Endpoints, con esto se pueden probar los endpoints rapidamente
+### AUTORES ###
+
+### Get all authors
+GET http://localhost:7000/api/authors
+Accept: application/json
+
+### Get author by ID
+GET http://localhost:7000/api/authors/1
+Accept: application/json
+
+### Create new author
+POST http://localhost:7000/api/authors
+Content-Type: application/json
+
+{
+  "name": "Gabriel Rolón",
+  "birthDate": "1961-11-01",
+  "nationality": "Argentino"
+}
+
+### Update author
+PUT http://localhost:7000/api/authors/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "Gabriel García Márquez UPDATE",
+  "birthDate": "1927-03-06",
+  "nationality": "Colombiano"
+}
+
+### Delete author
+DELETE http://localhost:7000/api/authors/1
+
+### LIBROS ###
+
+### Get all books
+GET http://localhost:7000/api/books
+Accept: application/json
+
+### Get book by ID
+GET http://localhost:7000/api/books/1
+Accept: application/json
+
+### Search books
+GET http://localhost:7000/api/books/search?title=cien&genre=Fiction&authorName=García
+Accept: application/json
+
+### Create new book
+POST http://localhost:7000/api/books
+Content-Type: application/json
+
+{
+  "title": "En agosto nos vemos",
+  "genre": "Fiction",
+  "publishDate": "2024-03-06",
+  "pages": 120,
+  "publisher": "Editorial Sudamericana",
+  "isbn": "978-95-007-7022-4",
+  "price": 29.99,
+  "language": "Spanish",
+  "authorId": 1
+}
+
+### Update book
+PUT http://localhost:7000/api/books/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Cien años de soledad",
+  "genre": "Fiction",
+  "publishDate": "1967-06-05",
+  "pages": 471,
+  "publisher": "Editorial Sudamericana",
+  "isbn": "978-84-376-0494-7",
+  "price": 25.99,
+  "language": "Spanish",
+  "authorId": 1
+}
+
+### Delete book
+DELETE http://localhost:7000/api/books/1
