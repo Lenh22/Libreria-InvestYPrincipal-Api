@@ -17,6 +17,8 @@ namespace Frontend.Pages
     {
         private static readonly HttpClient httpClient = new HttpClient();
         private const string API_BASE_URL = "http://localhost:7000/api";
+        private bool _eventsSetup = false;
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -25,7 +27,7 @@ namespace Frontend.Pages
 
         protected void Page_Init(object sender, EventArgs e)
         {
-            // Configurar eventos aquí para asegurar que los UserControls estén disponibles
+            // Para que los UserControls esten disponibles
             // Se hace antes del PostBack. Es para vincular eventos
             SetupEventHandlers();
         }
@@ -34,13 +36,11 @@ namespace Frontend.Pages
         {
             if (!IsPostBack)
             {
-                //await LoadBooks();
                 await LoadAuthors();
                 await LoadBooks();
             }
         }
 
-        private bool _eventsSetup = false;
 
         private void SetupEventHandlers()
         {
@@ -48,12 +48,13 @@ namespace Frontend.Pages
 
             if (ucBookSearch != null)
             {
-                ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
-                ucBookSearch.ClearRequested += UcBookSearch_ClearRequested; 
-                //ucBookSearch.BookSelected += UcBookSearch_BookSelected; // Verificar funcionalidad
 
                 ucBookSearch.EditRequested += UcBookSearch_EditRequested;
                 ucBookSearch.DeleteRequested += UcBookSearch_DeleteRequested;
+
+                ucBookSearch.SearchRequested += UcBookSearch_SearchRequested;
+                ucBookSearch.ClearRequested += UcBookSearch_ClearRequested; 
+
             }
 
             if (ucBookForm != null)
@@ -128,6 +129,32 @@ namespace Frontend.Pages
                 RegisterAsyncTask(new PageAsyncTask(async () => await DeleteBook(bookId)));
             }
         }
+        private async Task SearchRequested(object sender, EventArgs e)
+        {
+            try
+            {
+                var searchControl = (UserControls.BookSearch)sender;
+                var url = $"{API_BASE_URL}/books/search?title={searchControl.Title}&genre={searchControl.Genre}&authorName={searchControl.AuthorName}";
+
+                var response = await httpClient.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    var json = await response.Content.ReadAsStringAsync();
+                    var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
+
+                    // Mostrar resultados en el GridView del UserControl
+                    searchControl.SearchResults = books;
+                }
+                else
+                {
+                    ShowMessage($"API Error: {response.StatusCode} - {response.ReasonPhrase}", "error");
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error en la búsqueda: {ex.Message}", "error");
+            }
+        }
 
         private async Task LoadBookForEdit(int bookId)
         {
@@ -168,6 +195,8 @@ namespace Frontend.Pages
                 if (response.IsSuccessStatusCode)
                 {
                     ShowMessage("Libro eliminado correctamente", "success");
+                    //await LoadBooks();
+                    await RefreshBooksView();
                     await LoadBooks();
                 }
                 else
@@ -190,45 +219,20 @@ namespace Frontend.Pages
                 deleteArgs.Cancel = true;
         }
 
-        private async void UcBookSearch_SearchRequested(object sender, EventArgs e)
+        private void UcBookSearch_SearchRequested(object sender, EventArgs e)
         {
-            try
-            {
-                var searchControl = (UserControls.BookSearch)sender;
-                var url = $"{API_BASE_URL}/books/search?title={searchControl.Title}&genre={searchControl.Genre}&authorName={searchControl.AuthorName}";
-
-                var response = await httpClient.GetAsync(url);
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
-                    var books = JsonConvert.DeserializeObject<List<BookDto>>(json);
-
-                    // Mostrar resultados en el GridView del UserControl
-                    searchControl.SearchResults = books;
-                }
-                else
-                {
-                    ShowMessage($"API Error: {response.StatusCode} - {response.ReasonPhrase}", "error");
-                }
-            }
-            catch (Exception ex)
-            {
-                ShowMessage($"Error en la búsqueda: {ex.Message}", "error");
-            }
+            RegisterAsyncTask(new PageAsyncTask(async () => await SearchRequested(sender, e)));
         }
 
-        private void UcBookSearch_ClearRequested(object sender, EventArgs e)
+        private async void UcBookSearch_ClearRequested(object sender, EventArgs e)
         {
-            // Limpiar búsqueda y recargar libros (sincrónico)
-            ucBookSearch.ClearSearchResults();
-            LoadBooks().Wait(); // Espera sincronico
+            // Limpiar búsqueda y recargar libros
+            RegisterAsyncTask(new PageAsyncTask(async () =>
+            {
+                ucBookSearch.ClearSearchResults();
+                await LoadBooks();
+            }));
         }
-
-        //private void UcBookSearch_BookSelected(object sender, UserControls.BookSelectedEventArgs e) /// Verificar funcionalidad
-        //{
-        //    // Cargar el libro seleccionado en el formulario para edición (sincrónico)
-        //    LoadBookForEdit(e.SelectedBook.Id).Wait();
-        //}
 
         private void UcBookSearch_EditRequested(object sender, int bookId)
         {
@@ -275,6 +279,7 @@ namespace Frontend.Pages
                 {
                     ShowMessage(book.Id == 0 ? "Libro creado correctamente" : "Libro actualizado correctamente", "success");
                     HideModal();
+                    await RefreshBooksView();
                     await LoadBooks();
                 }
                 else
@@ -319,5 +324,15 @@ namespace Frontend.Pages
 
             }
         }
+        private async Task RefreshBooksView()
+        {
+            if (!string.IsNullOrEmpty(ucBookSearch.Title) ||
+                !string.IsNullOrEmpty(ucBookSearch.Genre) ||
+                !string.IsNullOrEmpty(ucBookSearch.AuthorName))
+            {
+                await SearchRequested(ucBookSearch, EventArgs.Empty);
+            }
+        }
+
     }
 }

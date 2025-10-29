@@ -29,14 +29,29 @@
                 <Columns>
                     <asp:BoundField DataField="Id" HeaderText="ID" />
                     <asp:BoundField DataField="Title" HeaderText="Title" />
-                    <asp:BoundField DataField="Genre" HeaderText="Genre" />
+                    <asp:TemplateField HeaderText="Genre">
+                        <ItemTemplate>
+                            <span class="badge bg-info"><%# Eval("Genre") %></span>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Pages">
+                        <ItemTemplate>
+                            <span class="badge bg-secondary"><%# Eval("Pages") %> pgs</span>
+                        </ItemTemplate>
+                    </asp:TemplateField>
+                    <asp:BoundField DataField="PublishDate" HeaderText="Publish Date" DataFormatString="{0:dd/MM/yyyy}" />
+                    <asp:BoundField DataField="Publisher" HeaderText="Publisher" />
+                    <asp:BoundField DataField="ISBN" HeaderText="ISBN" ItemStyle-CssClass="font-monospace small" />
+                    <asp:BoundField DataField="Price" HeaderText="Price" DataFormatString="{0:C}" ItemStyle-CssClass="fw-bold text-success" />
+                    <asp:TemplateField HeaderText="Language">
+                        <ItemTemplate>
+                            <span class="badge bg-warning text-dark"><%# Eval("Language") %></span>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:BoundField DataField="AuthorName" HeaderText="Author" ItemStyle-CssClass="text-muted" />
                     <asp:TemplateField HeaderText="Actions">
                         <ItemTemplate>
                             <div class="btn-group" role="group">
-<%--                                <asp:Button ID="btnSelect" runat="server" Text="Select" 
-                                    CssClass="btn btn-sm btn-info me-1" 
-                                    CommandName="Select" CommandArgument='<%# Eval("Id") %>' CausesValidation="false" />--%>
                                 <asp:Button ID="btnEdit" runat="server" Text="Edit" 
                                     CssClass="btn btn-sm btn-warning me-1" 
                                     CommandName="EditBook" CommandArgument='<%# Eval("Id") %>' CausesValidation="false" />

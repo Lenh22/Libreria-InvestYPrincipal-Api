@@ -48,7 +48,7 @@ namespace Frontend.Pages
 
                     // Actualizar contador de autores
                     int authorCount = authors?.Count ?? 0;
-                    ltAuthorCount.Text = $"{authorCount} books";
+                    ltAuthorCount.Text = $"{authorCount} authors";
                 }
             }
             catch (Exception ex)
